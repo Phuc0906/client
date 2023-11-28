@@ -1,4 +1,3 @@
-import React from "react";
 import FormLayout from "../components/layout/FormLayout";
 import { Field } from "../components/field";
 import { Label } from "../components/label";
@@ -6,15 +5,53 @@ import { Input } from "../components/input";
 import useToggle from "../hooks/useToggle";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/outline";
 import { Button } from "../components/button";
+import { SubmitHandler, useForm, Resolver } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useEffect } from "react";
+
+const validationSchema = yup.object().shape({
+    fullname: yup.string().required(),
+    email: yup.string().required(),
+    password: yup.string().required(),
+});
 
 const SignUpPage = () => {
     const { value, toggle } = useToggle();
+
+    const {
+        control,
+        handleSubmit,
+        formState: { errors, isValid },
+    } = useForm<FormValues>({
+        defaultValues: {
+            fullname: "",
+            email: "",
+            password: "",
+        },
+        resolver: yupResolver<FormValues>(validationSchema),
+        mode: "onChange",
+    });
+    const onSubmit: SubmitHandler<FormValues> = (values) => {
+        if (isValid) {
+            console.log(values);
+        }
+    };
+
+    useEffect(() => {
+        console.log(errors);
+    }, [errors]);
+
     return (
         <FormLayout>
-            <form className="max-w-[600px] w-full mx-auto mt-5" action="submit">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="max-w-[600px] w-full mx-auto mt-5"
+                action="submit">
                 <Field>
                     <Label htmlFor="fullname">Fullname</Label>
                     <Input
+                        control={control}
                         name="fullname"
                         type="text"
                         placeholder="Enter your fullname"></Input>
@@ -22,6 +59,7 @@ const SignUpPage = () => {
                 <Field>
                     <Label htmlFor="email">Email</Label>
                     <Input
+                        control={control}
                         onClick={toggle}
                         name="email"
                         placeholder="Enter your email"></Input>
@@ -29,6 +67,7 @@ const SignUpPage = () => {
                 <Field>
                     <Label htmlFor="password">Password</Label>
                     <Input
+                        control={control}
                         onClick={toggle}
                         name="password"
                         type={value ? "text" : "password"}
@@ -40,7 +79,7 @@ const SignUpPage = () => {
                         )}
                     </Input>
                 </Field>
-                <Button>Sign up</Button>
+                <Button type="submit">Sign up</Button>
             </form>
         </FormLayout>
     );
