@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import axios from "axios";
-import styled, { keyframes } from 'styled-components';
 
 
 const DocumentConverterPage = () => {
