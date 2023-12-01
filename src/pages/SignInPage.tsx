@@ -1,15 +1,15 @@
+import React, { useEffect } from "react";
 import FormLayout from "../components/layout/FormLayout";
 import { Field } from "../components/field";
 import { Label } from "../components/label";
 import { Input } from "../components/input";
-import useToggle from "../hooks/useToggle";
-import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/outline";
-import { Button } from "../components/button";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useEffect } from "react";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
+import { Button } from "../components/button";
+import * as yup from "yup";
+import useToggle from "../hooks/useToggle";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 
 const validationSchema = yup.object().shape({
@@ -18,9 +18,8 @@ const validationSchema = yup.object().shape({
     password: yup.string().required(),
 });
 
-const SignUpPage = () => {
+const SignInPage = () => {
     const { value, toggle } = useToggle();
-
     const {
         control,
         handleSubmit,
@@ -35,9 +34,8 @@ const SignUpPage = () => {
         mode: "onChange",
     });
     const onSubmit: SubmitHandler<FormValues> = (values) => {
-        if (isValid) {
-            console.log(values);
-        }
+        if (!isValid) return;
+        console.log(values);
     };
 
     useEffect(() => {
@@ -46,7 +44,6 @@ const SignUpPage = () => {
             toast.error(errorArr[0].message);
         }
     }, [errors]);
-
     return (
         <FormLayout>
             <form
@@ -60,14 +57,6 @@ const SignUpPage = () => {
                         name="fullname"
                         type="text"
                         placeholder="Enter your fullname"></Input>
-                </Field>
-                <Field>
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                        control={control}
-                        onClick={toggle}
-                        name="email"
-                        placeholder="Enter your email"></Input>
                 </Field>
                 <Field>
                     <Label htmlFor="password">Password</Label>
@@ -85,9 +74,9 @@ const SignUpPage = () => {
                     </Input>
                 </Field>
                 <strong className="block mb-5 text-center">
-                    You have an account already?{" "}
-                    <NavLink className="text-primary" to={"/sign-in"}>
-                        Login here!
+                    Do not have an account yet?{" "}
+                    <NavLink className="text-primary" to={"/sign-up"}>
+                        Register account
                     </NavLink>
                 </strong>
                 <Button type="submit">Sign up</Button>
@@ -96,4 +85,4 @@ const SignUpPage = () => {
     );
 };
 
-export default SignUpPage;
+export default SignInPage;

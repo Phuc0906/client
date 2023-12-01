@@ -1,14 +1,25 @@
-import React, { HTMLProps } from "react";
+import React, { InputHTMLAttributes } from "react";
+import { useController, UseControllerProps } from "react-hook-form";
 
-const Input: React.FC<HTMLProps<HTMLInputElement>> = ({
-    name = "",
+type InputProps = UseControllerProps<FormValues> &
+    InputHTMLAttributes<HTMLInputElement>;
+
+const Input: React.FC<InputProps> = ({
+    name,
     children,
     onClick,
+    control,
     ...props
 }) => {
+    const { field } = useController({
+        name,
+        control,
+    });
     return (
         <div className="relative w-full">
             <input
+                {...props}
+                {...field}
                 className={`w-full ${
                     !!children ? "pl-5 pr-14 py-4" : "px-5 py-4"
                 } transition-all border-2 border-transparent rounded outline-none bg-lightgray focus:bg-white focus:border-primary`}

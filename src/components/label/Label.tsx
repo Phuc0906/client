@@ -6,7 +6,10 @@ const Label: React.FC<HTMLProps<HTMLLabelElement>> = ({
     ...props
 }) => {
     return (
-        <label className="font-semibold" htmlFor={htmlFor} {...props}>
+        <label
+            className="font-semibold select-none"
+            htmlFor={htmlFor}
+            {...props}>
             {children}
         </label>
     );
