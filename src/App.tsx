@@ -15,10 +15,6 @@ const App = () => {
                     path="/document-converter"
                     element={<DocumentConverterPage/>}
                 />
-                    element={<SignUpPage></SignUpPage>}></Route>
-                <Route
-                    path="/sign-in"
-                    element={<SignInPage></SignInPage>}></Route>
             </Routes>
 
         </div>
