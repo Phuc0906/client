@@ -14,13 +14,14 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
     return (
         <button
+            disabled={disabled}
             type={type}
             {...props}
-            className={`cursor-pointer bg-gradient-to-br from-primary to-secondary rounded text-white font-semibold p-4 text-md flex justify-center items-center w-[300px] mx-auto ${
+            className={`h-14 cursor-pointer bg-gradient-to-br from-primary to-secondary rounded text-white font-semibold p-4 text-md flex justify-center items-center w-[300px] mx-auto ${
                 disabled ? "opacity-50" : ""
             }`}>
             {isLoading ? (
-                <div className="border-2 border-white border-t-transparent animate-spin"></div>
+                <div className="w-8 h-8 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
             ) : (
                 <span>{children}</span>
             )}
