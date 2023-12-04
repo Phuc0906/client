@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import styled, { keyframes } from 'styled-components';
+import {AuthContext, AuthContextPropsType} from "../context/auth-context";
 
 
 const DocumentConverterPage = () => {
     const [file, setFile] = useState(null);
     const [percentage, setPercentage] = useState<string>('0.0');
+    // @ts-ignore
+    const {user} = useContext<AuthContextPropsType>(AuthContext);
 
     const onFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         // @ts-ignore
@@ -15,6 +18,51 @@ const DocumentConverterPage = () => {
 
     }
 
+    const handleDownloadFile = () => {
+
+        //TODO: download by file id
+        axios.get(`http://localhost:8080/api/file/single-file?file_id=907e0c3a-0420-494c-996d-ae848be64f3f`).then(res => {
+            console.log(res.data)
+            downloadFile(base64ToFile(res.data, "", ""), 'test.docx');
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
+    const downloadFile = (file: File | null, fileName: string) => {
+        // @ts-ignore
+        const fileURL = URL.createObjectURL(file);
+        // Create an anchor element
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.download = fileName;
+
+        // Programmatically trigger the download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up the URL and remove the anchor element
+        URL.revokeObjectURL(fileURL);
+        document.body.removeChild(link);
+    }
+
+    function base64ToFile(base64String: string, fileName: string, fileType: string) {
+        // Step 1: Decode the Base64 string
+        const binaryString = atob(base64String);
+
+        // Step 2: Create a Blob
+        const arrayBuffer = new ArrayBuffer(binaryString.length);
+        const uint8Array = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < binaryString.length; i++) {
+            uint8Array[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([uint8Array], { type: fileType });
+
+        // Step 3: Convert Blob to File
+        const file = new File([blob], fileName, { type: fileType });
+        return file;
+    }
+
     const onFileUploadHandle = () => {
         console.log(file);
 
@@ -22,7 +70,9 @@ const DocumentConverterPage = () => {
         // @ts-ignore
         formData.append("file", file);
 
-        axios.post('http://localhost:8080/api/file', formData, {
+
+        //TODO:  Upload user File
+        axios.post(`http://localhost:8080/api/file?uid=${user?.uid}`, formData, {
             onDownloadProgress: progressEvent => {
                 const logVal: string = progressEvent.event.target.responseText.split('\n');
                 let i = logVal.length - 1;
@@ -51,24 +101,17 @@ const DocumentConverterPage = () => {
 
     }
 
-    const testEventHandle = () => {
-        axios.get('http://localhost:8080/api/file', {
-            onDownloadProgress: progressEvent => {
-                const testing = progressEvent.event.target.responseText;
+    useEffect(() => {
+        //TODO:  Query file by user id
 
-
-                // setPercentage()
-            },
-            onUploadProgress: progressEvent => {
-                console.log("")
-            }
-        }).then(res => {
-            console.log("Done")
-            console.log(res);
-        }).catch(err => {
-            console.log(err);
-        })
-    }
+        if (user !== null) {
+            axios.get(`http://localhost:8080/api/file?uid=${user?.uid}`).then(res => {
+                console.log(res);
+            }).catch(err => {
+                console.log(err);
+            })
+        }
+    }, [user])
 
     return <div className="">
         <div>
@@ -80,7 +123,7 @@ const DocumentConverterPage = () => {
             <button onClick={onFileUploadHandle}>Upload</button>
         </div>
         <div>
-            <button onClick={testEventHandle}>Test Evenet</button>
+            <button onClick={handleDownloadFile}>Download File</button>
         </div>
         <div className="text-3xl">
             <label>Loading {percentage} %</label>

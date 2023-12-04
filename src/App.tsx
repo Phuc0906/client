@@ -21,9 +21,9 @@ const App = () => {
                     />
                     <Route
                         path="/document-converter"
-                        element={<DocumentConverterPage />}
+                        element={<AuthProvider><DocumentConverterPage /></AuthProvider>}
                     />
-                    <Route path="/" element={<HomePage />} />
+                    <Route path="/" element={<AuthProvider><HomePage /></AuthProvider>} />
                 </Routes>
             </AuthProvider>
         </>
