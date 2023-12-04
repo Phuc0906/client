@@ -9,8 +9,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from "../firebase/firebase-config";
+import { addDoc, collection } from "firebase/firestore";
 
 const validationSchema = yup.object().shape({
     fullname: yup.string().required(),
@@ -20,11 +23,12 @@ const validationSchema = yup.object().shape({
 
 const SignUpPage = () => {
     const { value, toggle } = useToggle();
+    const navigate = useNavigate();
 
     const {
         control,
         handleSubmit,
-        formState: { errors, isValid },
+        formState: { errors, isValid, isSubmitting },
     } = useForm<FormValues>({
         defaultValues: {
             fullname: "",
@@ -34,9 +38,31 @@ const SignUpPage = () => {
         resolver: yupResolver<FormValues>(validationSchema),
         mode: "onChange",
     });
-    const onSubmit: SubmitHandler<FormValues> = (values) => {
-        if (isValid) {
-            console.log(values);
+    const onSubmit: SubmitHandler<FormValues> = async (values) => {
+        if (!isValid) return;
+        try {
+            await createUserWithEmailAndPassword(
+                auth,
+                values.email,
+                values.password
+            );
+        } catch (err) {
+            console.log(err);
+        }
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+            await updateProfile(currentUser, {
+                displayName: values.fullname,
+            });
+            const colRef = collection(db, "users");
+            await addDoc(colRef, {
+                fullname: values.fullname,
+                email: values.email,
+                password: values.password,
+            });
+            toast.success("Register successfully");
+        } else {
+            console.log("User is null");
         }
     };
 
@@ -65,7 +91,6 @@ const SignUpPage = () => {
                     <Label htmlFor="email">Email</Label>
                     <Input
                         control={control}
-                        onClick={toggle}
                         name="email"
                         placeholder="Enter your email"></Input>
                 </Field>
@@ -90,7 +115,12 @@ const SignUpPage = () => {
                         Login here!
                     </NavLink>
                 </strong>
-                <Button type="submit">Sign up</Button>
+                <Button
+                    isLoading={isSubmitting}
+                    disabled={isSubmitting}
+                    type="submit">
+                    Sign up
+                </Button>
             </form>
         </FormLayout>
     );
