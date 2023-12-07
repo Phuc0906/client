@@ -5,10 +5,12 @@ import DocumentConverterPage from "./pages/DocumentConverterPage";
 import SignInPage from "./pages/SignInPage";
 import { AuthProvider } from "./context/auth-context";
 import HomePage from "./pages/HomePage";
+import NavBar from "./components/nav/NavBar";
 
 const App = () => {
     return (
-        <>
+        <div className={`flex`}>
+            <NavBar/>
             <AuthProvider>
                 <Routes>
                     <Route
@@ -26,7 +28,7 @@ const App = () => {
                     <Route path="/" element={<AuthProvider><HomePage /></AuthProvider>} />
                 </Routes>
             </AuthProvider>
-        </>
+        </div>
     );
 };
 

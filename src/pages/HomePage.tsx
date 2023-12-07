@@ -2,6 +2,7 @@ import React, {useContext} from "react";
 import { auth } from "../firebase/firebase-config";
 import { useNavigate } from "react-router-dom";
 import {AuthContext, AuthContextPropsType, useAuth} from "../context/auth-context";
+import DocumentCard from "../components/document/DocumentCard";
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -25,18 +26,10 @@ const HomePage = () => {
     }
 
     return (
-        <div>
-            <div className="p-4 flex flex-col gap-5">
-                <button
-                    onClick={handleToDocumentPage}
-                    className="inline-block p-3 ml-auto text-white bg-red-500 rounded-md">
-                    To document converter
-                </button>
-                <button
-                    onClick={handleSignOut}
-                    className="inline-block p-3 ml-auto text-white bg-red-500 rounded-md">
-                    Sign out with account {user?.email}
-                </button>
+        <div className={`w-full`}>
+            <div className="w-full pl-14 pt-10 flex flex-row flex-wrap gap-5">
+                <DocumentCard/>
+                <DocumentCard/>
             </div>
         </div>
     );

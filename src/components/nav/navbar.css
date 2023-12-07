@@ -1,0 +1,10 @@
+.sidebar {
+    width: 80px;
+    height: 100vh;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+.sidebar:hover {
+    width: 370px;
+}
