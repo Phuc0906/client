@@ -12,13 +12,14 @@ interface AuthContextProps {
     children: ReactNode;
 }
 
-const AuthContext = createContext<
-    | [User | undefined, React.Dispatch<React.SetStateAction<User | undefined>>]
-    | undefined
->(undefined);
+export type AuthContextPropsType = {
+    user: User | null
+}
+
+const AuthContext = createContext<AuthContextPropsType | null>(null);
 
 function AuthProvider({ children }: AuthContextProps) {
-    const [userInfo, setUserInfo] = useState<User | undefined>();
+    const [userInfo, setUserInfo] = useState<User | null>(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -31,13 +32,8 @@ function AuthProvider({ children }: AuthContextProps) {
         return () => unsubscribe();
     }, []);
 
-    const value: [
-        User | undefined,
-        React.Dispatch<React.SetStateAction<User | undefined>>
-    ] = [userInfo, setUserInfo];
-
     return (
-        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{user: userInfo}}>{children}</AuthContext.Provider>
     );
 }
 
@@ -49,4 +45,4 @@ function useAuth() {
     return context;
 }
 
-export { AuthProvider, useAuth };
+export { AuthProvider, useAuth, AuthContext };
