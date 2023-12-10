@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
-import styled, { keyframes } from 'styled-components';
 import {AuthContext, AuthContextPropsType} from "../context/auth-context";
 
 
@@ -21,7 +20,7 @@ const DocumentConverterPage = () => {
     const handleDownloadFile = () => {
 
         //TODO: download by file id
-        axios.get(`http://localhost:8080/api/file/single-file?file_id=907e0c3a-0420-494c-996d-ae848be64f3f`).then(res => {
+        axios.get(`${process.env.REACT_APP_API_URL}/api/file/single-file?file_id=c4bb6464-52bc-41c4-829a-f1c3713d7c06`).then(res => {
             console.log(res.data)
             downloadFile(base64ToFile(res.data, "", ""), 'test.docx');
         }).catch(err => {

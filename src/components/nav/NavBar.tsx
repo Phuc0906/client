@@ -12,7 +12,7 @@ const NavBar = () => {
     }} onMouseLeave={() => {
         setIsNavbarHover(false);
     }} className=" bg-green-950 flex flex-col items-center justify-between sidebar">
-        <div className="flex flex-col gap-16 items-center w-full">
+        <div className={`flex flex-col gap-16 items-center w-full ${isNavBarHover ? '' : ''}`}>
             <div className={`flex gap-4 items-center w-full mt-10 ${isNavBarHover ? 'justify-start pl-10' : 'justify-center'}  relative`}>
                 <div className="w-14 h-14">
                     <img className="w-full h-full" src={appLogo} alt={"App Logo"} />
@@ -23,7 +23,7 @@ const NavBar = () => {
                     </div>
                 </div>
             </div>
-            <div className={`flex flex-col gap-5 items-start transition-all duration-300 mt-10 w-full ${isNavBarHover ? 'mr-8' : 'mr-0'}`}>
+            <div className={`flex flex-col gap-5 items-start transition-all duration-300 mt-10 w-full ${isNavBarHover ? 'mr-0' : 'mr-0'}`}>
                 <div onClick={() => {
                     navigate('/');
                     window.location.reload();
