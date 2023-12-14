@@ -4,16 +4,36 @@ import { AuthContext, AuthContextPropsType } from "../context/auth-context";
 import fileImg from "../assests/file.png";
 
 const DocumentConverterPage = () => {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState("");
   const [percentage, setPercentage] = useState<string>("0.0");
   // @ts-ignore
   const { user } = useContext<AuthContextPropsType>(AuthContext);
 
   const onFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // @ts-ignore
-    console.log(e.target.files[0]);
-    // @ts-ignore
-    setFile(e.target.files[0]);
+    const selectedFile = e.target.files?.[0]; // Use optional chaining to handle null
+    if (selectedFile) {
+      console.log(selectedFile);
+      setFile(selectedFile);
+      setFileName(selectedFile.name);
+    } else {
+      // Handle case when no file is chosen
+      setFile(null);
+      setFileName("");
+    }
+  };
+
+  const clearFile = () => {
+    setFile(null);
+    setFileName("");
+
+    // Reset the input value to allow selecting the same file again
+    const fileInput = document.querySelector(
+      "input[type='file']"
+    ) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = "";
+    }
   };
 
   const handleDownloadFile = () => {
@@ -136,36 +156,102 @@ const DocumentConverterPage = () => {
         <div className="h-0.5 w-full bg-black my-5"></div>
         <div
           onClick={() => document.querySelector("input")?.click()}
-          className={`w-full flex justify-center items-center gap-3 border-2 border-dashed border-gray-800 rounded-md box-border text-gray-400 cursor-pointer relative p-14 sm:p-24 text-center hover:bg-emerald-100`}
+          className={`w-full flex flex-col justify-center text-black items-center gap-3 border-2 border-dashed border-gray-800 rounded-md box-border text-gray-400 cursor-pointer relative p-14 sm:p-24 text-center hover:bg-gray-100`}
         >
-          <input onChange={onFileInput} type={"file"} className="text-black" />
-          <button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6 stroke-black hover:scale-110"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+          <input
+            onChange={onFileInput}
+            type={"file"}
+            className="text-black"
+            hidden
+          />
+
+          <img
+            src={fileImg}
+            alt=""
+            className="w-10 h-10 transition-transform transform hover:scale-110"
+          />
+          <h1>Browse your file</h1>
         </div>
+
+        {file && (
+          <div className="flex justify-between items-center my-2.5 p-2.5 rounded-md bg-green-100">
+            {fileName}
+            <button onClick={clearFile}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 stroke-black transition-transform transform hover:scale-110"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        )}
       </div>
       <div>
-        <button onClick={onFileUploadHandle}>Upload</button>
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded my-2.5 inline-flex items-center"
+          onClick={onFileUploadHandle}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="ww-4 h-4 mr-2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+            />
+          </svg>
+          Upload
+        </button>
       </div>
       <div>
-        <button onClick={handleDownloadFile}>Download File</button>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+          onClick={handleDownloadFile}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            className="w-4 h-4 mr-2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+            />
+          </svg>
+
+          <h1>Download File</h1>
+        </button>
       </div>
-      <div className="text-3xl">
+      {/* <div className="text-3xl">
         <label>Loading {percentage} %</label>
-      </div>
+      </div> */}
+
+      {parseFloat(percentage) > 0.0 && (
+        <div className="text-3xl">
+          <label>Loading</label>
+          <progress className="w-full" value={parseFloat(percentage)} max="100">
+            {percentage}%
+          </progress>
+        </div>
+      )}
     </div>
   );
 };
