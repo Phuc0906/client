@@ -10,8 +10,11 @@ const PageLayout: React.FC<PageLayoutProps> = ({ children, ...props }) => {
     return (
         <div>
             <Header></Header>
-            <div className=" grid grid-cols-[300px_minmax(0, 1fr)">
+            <div className="relative">
                 <NavBar></NavBar>
+                <div className="absolute top-0 left-[80px] h-screen inset-0">
+                    {children}
+                </div>
             </div>
         </div>
     );

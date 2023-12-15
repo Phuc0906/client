@@ -15,7 +15,7 @@ const NavBar = () => {
             onMouseLeave={() => {
                 setIsNavbarHover(false);
             }}
-            className="flex flex-col items-center justify-between py-10 bg-green-950 sidebar">
+            className="absolute top-0 left-0 z-40 flex flex-col items-center justify-between py-10 bg-green-950 sidebar">
             <div
                 className={`flex flex-col gap-16 items-center w-full ${
                     isNavBarHover ? "" : ""
@@ -31,7 +31,7 @@ const NavBar = () => {
                         }}
                         className={`${
                             isNavBarHover ? "pl-10" : "pl-4"
-                        } flex gap-3 relative items-center transition-colors duration-100 hover:bg-gray-100 hover:bg-opacity-10 px-5 py-1.5 w-full `}>
+                        } flex gap-3 relative items-center transition-colors duration-100 hover:bg-gray-100 hover:bg-opacity-10 px-5 py-1.5 w-full`}>
                         <div>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
