@@ -9,26 +9,13 @@ import NavBar from "./components/nav/NavBar";
 
 const App = () => {
     return (
-        <div className={`flex`}>
-            <NavBar/>
-            <AuthProvider>
-                <Routes>
-                    <Route
-                        path="/sign-up"
-                        element={<SignUpPage></SignUpPage>}
-                    />
-                    <Route
-                        path="/sign-in"
-                        element={<SignInPage></SignInPage>}
-                    />
-                    <Route
-                        path="/document-converter"
-                        element={<AuthProvider><DocumentConverterPage /></AuthProvider>}
-                    />
-                    <Route path="/" element={<AuthProvider><HomePage /></AuthProvider>} />
-                </Routes>
-            </AuthProvider>
-        </div>
+        <AuthProvider>
+            <Routes>
+                <Route path="/sign-up" element={<SignUpPage></SignUpPage>} />
+                <Route path="/sign-in" element={<SignInPage></SignInPage>} />
+                <Route path="/" element={<HomePage />} />
+            </Routes>
+        </AuthProvider>
     );
 };
 
