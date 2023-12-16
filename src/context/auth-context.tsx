@@ -27,8 +27,6 @@ function AuthProvider({ children }: AuthContextProps) {
                 setUserInfo(user);
             }
         });
-
-        // Cleanup function
         return () => unsubscribe();
     }, []);
 
