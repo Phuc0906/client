@@ -20,11 +20,11 @@ const Header: React.FC = () => {
                 </h2>
             </div>
 
-            <h2 className="text-center">Paraphaser</h2>
+            <h2 className="text-center">Enhance Your Work</h2>
 
             <div className="flex items-center gap-3 pr-3 ml-auto">
                 {user ? (
-                    <div className="flex items-center gap-x-3">
+                    <div className="flex items-center gap-4">
                         <span>
                             Welcome back <strong>{user.displayName}</strong>!
                         </span>

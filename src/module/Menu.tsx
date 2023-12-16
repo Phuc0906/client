@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/auth-context";
+import { auth } from "../firebase/firebase-config";
+
 import {
     UserIcon,
     SunIcon,
@@ -7,48 +9,58 @@ import {
     EnvelopeIcon,
     ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
 
-const menuItem = [
-    {
-        id: 0,
-        icon: <UserIcon className="w-7 h-7"></UserIcon>,
-        value: "Account details",
-    },
-    {
-        id: 1,
-        icon: <MoonIcon className="w-7 h-7"></MoonIcon>,
-        value: "Switch to Light Mode",
-    },
-    {
-        id: 2,
-        icon: <EnvelopeIcon className="w-7 h-7"></EnvelopeIcon>,
-        value: "Contact us",
-    },
-    {
-        id: 3,
-        icon: (
-            <ArrowRightOnRectangleIcon className="w-7 h-7"></ArrowRightOnRectangleIcon>
-        ),
-        value: "Log out",
-    },
-];
 const Menu = () => {
     // @ts-ignore
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [show, setShow] = useState(false);
-
+    const handleSignOut = () => {
+        auth.signOut()
+            .then(() => {
+                console.log("signout");
+                navigate("/sign-in");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    const menuItem = [
+        {
+            id: 0,
+            icon: <UserIcon className="w-7 h-7"></UserIcon>,
+            value: "Account details",
+        },
+        {
+            id: 1,
+            icon: <MoonIcon className="w-7 h-7"></MoonIcon>,
+            value: "Switch to Light Mode",
+        },
+        {
+            id: 2,
+            icon: <EnvelopeIcon className="w-7 h-7"></EnvelopeIcon>,
+            value: "Contact us",
+        },
+        {
+            id: 3,
+            icon: (
+                <ArrowRightOnRectangleIcon className="w-7 h-7"></ArrowRightOnRectangleIcon>
+            ),
+            value: "Log out",
+            onClick: handleSignOut,
+        },
+    ];
     return (
-        <div
-            className="relative z-50"
-            onMouseEnter={() => setShow(true)}
-            onMouseLeave={() => setShow(false)}>
+        <div onMouseLeave={() => setShow(false)} className="relative">
             <svg
+                onMouseEnter={() => setShow(true)}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="#2c2b2b"
-                className="w-12 h-12">
+                className={` z-50 w-12 h-12 `}>
                 <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -65,7 +77,10 @@ const Menu = () => {
                 </li>
                 {menuItem.length > 0 &&
                     menuItem.map((item) => (
-                        <li className="flex items-center p-2 mt-2 cursor-pointer select-none gap-x-3 hover:bg-secondary hover:bg-opacity-80 hover:text-white">
+                        <li
+                            key={item.id}
+                            onClick={item.onClick}
+                            className="flex items-center p-2 mt-2 cursor-pointer select-none gap-x-3 hover:bg-secondary hover:bg-opacity-80 hover:text-white">
                             {item.icon}
                             <span className="text-md">{item.value}</span>
                         </li>

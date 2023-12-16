@@ -4,3 +4,8 @@ type FormValues = {
     email: string;
     password: string;
 };
+interface Coordinate {
+    bottom?: number;
+    left?: number;
+    width: number;
+}

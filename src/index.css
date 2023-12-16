@@ -16,3 +16,10 @@ body {
     margin: 0 auto;
     padding: 0 20px;
 }
+
+.line-effect {
+    position: absolute;
+    height: 4px;
+    transition: all 0.3s linear;
+    background-color: green;
+}
