@@ -9,3 +9,6 @@ interface Coordinate {
     left?: number;
     width: number;
 }
+interface userInputProp {
+    className?: string;
+}

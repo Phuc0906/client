@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import appLogo from "../../assests/logo.png";
 import "./navbar.css";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +14,7 @@ const NavBar = () => {
             onMouseLeave={() => {
                 setIsNavbarHover(false);
             }}
-            className="absolute top-0 left-0 z-40 flex flex-col items-center justify-between py-10 bg-green-950 sidebar">
+            className="absolute top-0 left-0 z-40 flex flex-col items-center justify-between py-10 bg-green-950 sidebar page-content">
             <div
                 className={`flex flex-col gap-16 items-center w-full ${
                     isNavBarHover ? "" : ""

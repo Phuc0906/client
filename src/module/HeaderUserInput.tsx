@@ -1,28 +1,42 @@
 import React, { useEffect, useRef, useState } from "react";
 import Line from "../components/portal/Line";
+import { useMode } from "../context/mode-context";
 
-const HeaderUserInput = () => {
+const HeaderUserInput: React.FC<userInputProp> = ({ className }) => {
     const myRef = useRef<HTMLInputElement | null>(null);
+    const functionRef = useRef<(() => void) | null>(null);
     const [coordinate, setCoordinate] = useState<Coordinate>({
         width: 0,
     });
+    //@ts-ignore
+    const { setMode } = useMode();
+
+    // Functions
     const focusInput = () => {
         if (myRef.current) {
             myRef.current.focus();
         }
     };
-    useEffect(() => {
+    const init = () => {
         focusInput();
         if (myRef.current) {
             const { bottom, left, width } =
                 myRef.current.getBoundingClientRect();
             setCoordinate({ bottom, left, width });
         }
+    };
 
-        return () => {
-            focusInput();
-        };
-    }, []);
+    functionRef.current = init;
+
+    useEffect(() => {
+        if (functionRef && functionRef.current) {
+            functionRef.current();
+            const handleResize = () => {};
+            window.addEventListener("resize", handleResize);
+            return () => window.removeEventListener("resize", handleResize);
+        }
+    }, [myRef]);
+
     const handleClick = (e: React.MouseEvent<HTMLElement>) => {
         const targetElement = e.currentTarget;
         const { bottom, left, width } = targetElement.getBoundingClientRect();
@@ -30,11 +44,23 @@ const HeaderUserInput = () => {
     };
 
     return (
-        <div className="flex text-xl font-semibold select-none item-center gap-x-6">
-            <span ref={myRef} className="cursor-pointer" onClick={handleClick}>
+        <div
+            className={`flex text-xl font-semibold select-none item-center gap-x-6 ${className}`}>
+            <span
+                ref={myRef}
+                className="cursor-pointer"
+                onClick={(e) => {
+                    handleClick(e);
+                    setMode(false);
+                }}>
                 Text
             </span>
-            <span className="cursor-pointer" onClick={handleClick}>
+            <span
+                className="cursor-pointer"
+                onClick={(e) => {
+                    handleClick(e);
+                    setMode(true);
+                }}>
                 File
             </span>
             <Line {...coordinate}></Line>

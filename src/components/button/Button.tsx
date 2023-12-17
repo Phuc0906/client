@@ -8,6 +8,7 @@ const Button: React.FC<ButtonProps> = ({
     children,
     disabled,
     isLoading,
+    className,
     type = "button",
     onClick = () => {},
     ...props
@@ -19,7 +20,7 @@ const Button: React.FC<ButtonProps> = ({
             {...props}
             className={`h-14 cursor-pointer bg-gradient-to-br from-primary to-secondary rounded text-white font-semibold p-4 text-md flex justify-center items-center w-[300px] mx-auto ${
                 disabled ? "opacity-50" : ""
-            }`}>
+            } ${className}`}>
             {isLoading ? (
                 <div className="w-8 h-8 border-2 border-white rounded-full border-t-transparent animate-spin"></div>
             ) : (

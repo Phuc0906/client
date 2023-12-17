@@ -12,7 +12,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({ children, ...props }) => {
             <Header></Header>
             <div className="relative">
                 <NavBar></NavBar>
-                <div className="absolute top-0 left-[80px] h-screen inset-0">
+                <div className="absolute top-0 left-[80px] inset-0">
                     {children}
                 </div>
             </div>
