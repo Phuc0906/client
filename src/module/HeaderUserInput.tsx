@@ -31,7 +31,11 @@ const HeaderUserInput: React.FC<userInputProp> = ({ className }) => {
     useEffect(() => {
         if (functionRef && functionRef.current) {
             functionRef.current();
-            const handleResize = () => {};
+            const handleResize = () => {
+                if (functionRef.current) {
+                    functionRef.current();
+                }
+            };
             window.addEventListener("resize", handleResize);
             return () => window.removeEventListener("resize", handleResize);
         }

@@ -17,6 +17,7 @@ const Button: React.FC<ButtonProps> = ({
         <button
             disabled={disabled}
             type={type}
+            onClick={onClick}
             {...props}
             className={`h-14 cursor-pointer bg-gradient-to-br from-primary to-secondary rounded text-white font-semibold p-4 text-md flex justify-center items-center w-[300px] mx-auto ${
                 disabled ? "opacity-50" : ""

@@ -6,15 +6,24 @@ import SignInPage from "./pages/SignInPage";
 import { AuthProvider } from "./context/auth-context";
 import HomePage from "./pages/HomePage";
 import NavBar from "./components/nav/NavBar";
+import { ModeProvider } from "./context/mode-context";
 
 const App = () => {
     return (
         <AuthProvider>
-            <Routes>
-                <Route path="/sign-up" element={<SignUpPage></SignUpPage>} />
-                <Route path="/sign-in" element={<SignInPage></SignInPage>} />
-                <Route path="/" element={<HomePage />} />
-            </Routes>
+            <ModeProvider>
+                <Routes>
+                    <Route
+                        path="/sign-up"
+                        element={<SignUpPage></SignUpPage>}
+                    />
+                    <Route
+                        path="/sign-in"
+                        element={<SignInPage></SignInPage>}
+                    />
+                    <Route path="/" element={<HomePage />} />
+                </Routes>
+            </ModeProvider>
         </AuthProvider>
     );
 };
