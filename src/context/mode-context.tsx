@@ -26,6 +26,7 @@ function ModeProvider(props: ModeProviderProps) {
     const [mode, setMode] = useState<boolean>(false);
     const [selectedFile, setSelectedFile] = useState<File>();
     const [percentage, setPercentage] = useState<string>("0.0");
+    const [appearance, setAppearance] = useState<string>("light");
     // @ts-ignore
     const { user } = useAuth();
 
@@ -81,6 +82,8 @@ function ModeProvider(props: ModeProviderProps) {
         percentage,
         setPercentage,
         onFileUploadHandle,
+        appearance,
+        setAppearance,
     };
     return (
         <ModeContext.Provider {...props} value={value}></ModeContext.Provider>

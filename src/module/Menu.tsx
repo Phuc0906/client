@@ -10,10 +10,13 @@ import {
     ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import { useMode } from "../context/mode-context";
 
-const Menu = () => {
+const Menu: React.FC = () => {
     // @ts-ignore
     const { user } = useAuth();
+    // @ts-ignore
+    const { appearance, setAppearance } = useMode();
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const handleSignOut = () => {
@@ -26,6 +29,7 @@ const Menu = () => {
                 console.log(err);
             });
     };
+
     const menuItem = [
         {
             id: 0,
@@ -34,8 +38,22 @@ const Menu = () => {
         },
         {
             id: 1,
-            icon: <MoonIcon className="w-7 h-7"></MoonIcon>,
-            value: "Switch to Light Mode",
+            icon:
+                appearance === "dark" ? (
+                    <SunIcon className="w-7 h-7"></SunIcon>
+                ) : (
+                    <MoonIcon className="w-7 h-7"></MoonIcon>
+                ),
+            value: `${
+                appearance === "dark"
+                    ? "Switch to light mode"
+                    : "Switch to dark mode"
+            }`,
+            onClick: () => {
+                setAppearance((prev: string) =>
+                    prev === "light" ? "dark" : "light"
+                );
+            },
         },
         {
             id: 2,
@@ -59,7 +77,7 @@ const Menu = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
-                stroke="#2c2b2b"
+                stroke={`${appearance === "dark" ? "#fff" : "#121212"}`}
                 className={` z-50 w-12 h-12 `}>
                 <path
                     strokeLinecap="round"
@@ -68,8 +86,10 @@ const Menu = () => {
                 />
             </svg>
             <ul
-                className={`absolute right-0 bg-white shadow-lg top-full w-60 z-50 ${
-                    show ? "opacity-100 visible" : "opacity-0 invisibl"
+                className={`absolute rounded-md right-0 ${
+                    appearance === "dark" ? "bg-[#202020] text-white" : ""
+                } shadow-lg top-full w-60 z-50 ${
+                    show ? "opacity-100 visible" : "opacity-0 invisible"
                 } transition-all text-[#333]`}>
                 <li className="p-2 select-none">
                     <p>Email</p>

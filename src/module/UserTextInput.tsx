@@ -14,7 +14,14 @@ const UserTextInput: React.FC<userInputProp> = ({ className }) => {
 
     useLayoutEffect(() => {
         if (text) {
-            setTexteraHeight(`${texteraRef?.current?.scrollHeight}px`);
+            const scrollHeight = texteraRef.current?.scrollHeight;
+            if (typeof scrollHeight !== "undefined" && scrollHeight != null) {
+                if (scrollHeight <= 400) {
+                    setTexteraHeight(`${texteraRef?.current?.scrollHeight}px`);
+                } else {
+                    setTexteraHeight(`400px`);
+                }
+            }
         } else {
             setTexteraHeight("auto");
         }
@@ -33,7 +40,7 @@ const UserTextInput: React.FC<userInputProp> = ({ className }) => {
                         style={{ height: texteraHeight }}
                         ref={texteraRef}
                         placeholder="To write text, enter or paste it here and press 'Correct' "
-                        className="w-full mt-4 overflow-y-auto border-none resize-none max-h-[400px] focus:border-none focus:outline-none no-scrollbar flex-1"></textarea>
+                        className="w-full mt-4 overflow-y-auto border-none resize-none max-h-[400px]focus:border-none focus:outline-none no-scrollbar flex-1 bg-inherit"></textarea>
                 </div>
             )}
             {mode && <div>Hello</div>}

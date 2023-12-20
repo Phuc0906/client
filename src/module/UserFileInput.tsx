@@ -2,7 +2,7 @@ import React from "react";
 import { CloudArrowUpIcon } from "@heroicons/react/24/solid";
 import { DocumentIcon } from "@heroicons/react/24/outline";
 import { useMode } from "../context/mode-context";
-const UserFileInput = () => {
+const UserFileInput: React.FC<userInputProp> = ({ className }) => {
     // @ts-ignore
     const { selectedFile, setSelectedFile } = useMode();
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,9 +19,12 @@ const UserFileInput = () => {
                 type="file"
                 className="hidden-input"
             />
-            <div className="flex items-center justify-center w-full p-4 bg-gray-100 border-2 rounded-lg min-h-[300px] relative overflow-hidden">
+            <div
+                className={`flex items-center justify-center w-full p-4 bg-gray-100  rounded-lg min-h-[300px] relative overflow-hidden ${
+                    className === "dark" ? "bg-[#202020]" : ""
+                }`}>
                 {!selectedFile && (
-                    <CloudArrowUpIcon className="w-12 h-12 text-gray-w00 "></CloudArrowUpIcon>
+                    <CloudArrowUpIcon className="w-12 h-12 text-gray-300 "></CloudArrowUpIcon>
                 )}
                 {selectedFile && (
                     <div className="flex flex-col items-center">

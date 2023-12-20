@@ -3,11 +3,15 @@ import { useAuth } from "../../context/auth-context";
 import { NavLink } from "react-router-dom";
 import Menu from "../../module/Menu";
 
-const Header: React.FC = () => {
+const Header: React.FC<userInputProp> = ({ className }) => {
     // @ts-ignore
     const { user } = useAuth();
+
     return (
-        <div className="grid items-center justify-center w-full grid-cols-3 shadow-md h-15">
+        <div
+            className={`grid items-center justify-center w-full grid-cols-3 shadow-md h-15 ${
+                className === "dark" ? "bg-[#202020] text-white" : ""
+            }`}>
             <div className="flex items-center gap-3">
                 <img
                     className="object-cover w-12 h-12"
