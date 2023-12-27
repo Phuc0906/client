@@ -6,27 +6,25 @@ import { AuthProvider } from "./context/auth-context";
 import { ModeProvider } from "./context/mode-context";
 import PageLayout from "./components/layout/PageLayout";
 import HomePage from "./pages/HomePage";
+import Profile from "./pages/Profile";
 
 const App = () => {
-    return (
-        <AuthProvider>
-            <ModeProvider>
-                <Routes>
-                    <Route
-                        path="/sign-up"
-                        element={<SignUpPage></SignUpPage>}
-                    />
-                    <Route
-                        path="/sign-in"
-                        element={<SignInPage></SignInPage>}
-                    />
-                    <Route element={<PageLayout />}>
-                        <Route element={<HomePage></HomePage>} path="/" />
-                    </Route>
-                </Routes>
-            </ModeProvider>
-        </AuthProvider>
-    );
+  return (
+    <AuthProvider>
+      <ModeProvider>
+        <Routes>
+          <Route path="/sign-up" element={<SignUpPage></SignUpPage>} />
+          <Route path="/sign-in" element={<SignInPage></SignInPage>} />
+          <Route element={<PageLayout />}>
+            <Route element={<HomePage></HomePage>} path="/" />
+          </Route>
+          <Route element={<PageLayout />}>
+            <Route element={<Profile></Profile>} path="/profile" />
+          </Route>
+        </Routes>
+      </ModeProvider>
+    </AuthProvider>
+  );
 };
 
 export default App;
