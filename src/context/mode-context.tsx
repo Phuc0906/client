@@ -29,7 +29,8 @@ function ModeProvider(props: ModeProviderProps) {
     const [percentage, setPercentage] = useState<string>("0.0");
     const [appearance, setAppearance] = useState<string>("light");
     const [documentId, setDocumentId] = useState<string>('');
-    const [slidingWidth, setSlidingWidth] = useState<number>(0)
+    const [slidingWidth, setSlidingWidth] = useState<number>(0);
+    const [userText, setUserText] = useState<string>('');
     // @ts-ignore
     const { user } = useAuth();
 
@@ -106,7 +107,9 @@ function ModeProvider(props: ModeProviderProps) {
         onFileUploadHandle,
         appearance,
         setAppearance,
-        slidingWidth
+        slidingWidth,
+        userText,
+        setUserText
     };
     return (
         <ModeContext.Provider {...props} value={value}></ModeContext.Provider>

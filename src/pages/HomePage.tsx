@@ -5,18 +5,25 @@ import { Button } from "../components/button";
 import UserTextInput from "../module/UserTextInput";
 import { useMode } from "../context/mode-context";
 import UserFileInput from "../module/UserFileInput";
-import axios from "axios/index";
+import axios from "axios";
 import {AuthContext, AuthContextPropsType} from "../context/auth-context";
 
 const HomePage: React.FC = () => {
     // @ts-ignore
-    const { mode, onFileUploadHandle, appearance, percentage, slidingWidth } = useMode();
+    const { mode, onFileUploadHandle, appearance, percentage, slidingWidth, userText, setUserText } = useMode();
     // @ts-ignore
     const { user } = useContext<AuthContextPropsType>(AuthContext);
 
     //Functions
     const hanldeTextUpload = () => {
-        console.log("hello");
+        // console.log("USER TEXT: " + userText);
+        axios.post(`http://localhost:8080/api/file/paragraph`, {
+            paragraph: userText
+        }).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
     };
 
 
@@ -29,6 +36,7 @@ const HomePage: React.FC = () => {
                     }`}></HeaderUserInput>
                 {!mode && (
                     <UserTextInput
+                        setText={setUserText}
                         className={`h-full min-h-[250px] ${
                             appearance === "dark" ? "bg-[#202020]" : ""
                         }`}></UserTextInput>
