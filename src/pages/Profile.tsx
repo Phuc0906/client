@@ -64,12 +64,12 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="h-full flex bg-[#F3F5F9]">
+    <div className="h-full mt-10">
       {user && (
-        <div className="h-fit w-4/5 bg-white m-auto rounded-md shadow-md flex-col p-10">
+        <div className="h-fit w-4/5 bg-white p-10">
           <div className="flex gap-5 items-center mb-5">
             <UserIcon className="w-5 h-5"></UserIcon>
-            <h4 className="font-semibold">Account details</h4>
+            <h2 className="font-semibold">Account details</h2>
           </div>
           <div className="flex-col ms-10">
             {/* Name */}
