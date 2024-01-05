@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { CloudArrowUpIcon } from "@heroicons/react/24/solid";
 import { DocumentIcon } from "@heroicons/react/24/outline";
 import { useMode } from "../context/mode-context";
+import {userInputProp} from "../react-app-env";
 
 const UserFileInput: React.FC<userInputProp> = ({ className }) => {
     // @ts-ignore
@@ -13,7 +14,7 @@ const UserFileInput: React.FC<userInputProp> = ({ className }) => {
         setSelectedFile(file);
     };
 
-    
+
 
     return (
         <label>

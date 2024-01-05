@@ -2,6 +2,7 @@ import React from "react";
 import { useAuth } from "../../context/auth-context";
 import { NavLink } from "react-router-dom";
 import Menu from "../../module/Menu";
+import {userInputProp} from "../../react-app-env";
 
 const Header: React.FC<userInputProp> = ({ className }) => {
     // @ts-ignore

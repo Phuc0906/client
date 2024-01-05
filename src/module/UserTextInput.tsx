@@ -11,7 +11,9 @@ const UserTextInput: React.FC<userInputProp> = ({ className, setText }) => {
     //Function
     const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setUserText(e.target.value);
-        setText(e.target.value);
+        if (setText) {
+            setText(e.target.value);
+        }
     };
 
     useLayoutEffect(() => {

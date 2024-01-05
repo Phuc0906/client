@@ -42,7 +42,7 @@ const HomePage: React.FC = () => {
                         }`}></UserTextInput>
                 )}
                 {mode && (
-                    <UserFileInput className={`${appearance}`}></UserFileInput>
+                    <UserFileInput  className={`${appearance}`}></UserFileInput>
                 )}
             </div>
             {mode ? <div className="w-[450px] h-10 mx-auto rounded-xl border-2 border-green-600">

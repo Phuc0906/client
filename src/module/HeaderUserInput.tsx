@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Line from "../components/portal/Line";
 import { useMode } from "../context/mode-context";
+import {Coordinate, userInputProp} from "../react-app-env";
 
 const HeaderUserInput: React.FC<userInputProp> = ({ className }) => {
     const myRef = useRef<HTMLInputElement | null>(null);
