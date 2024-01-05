@@ -2,7 +2,8 @@ import React from "react";
 import { useAuth } from "../../context/auth-context";
 import { NavLink } from "react-router-dom";
 import Menu from "../../module/Menu";
-import {userInputProp} from "../../react-app-env";
+import { userInputProp } from "../../react-app-env";
+import { Button } from "../button";
 
 const Header: React.FC<userInputProp> = ({ className }) => {
     // @ts-ignore
@@ -36,7 +37,11 @@ const Header: React.FC<userInputProp> = ({ className }) => {
                         <Menu></Menu>
                     </div>
                 ) : (
-                    <NavLink to={"/sign-in"}>Login</NavLink>
+                    <NavLink
+                        className="font-semibold underline"
+                        to={"/sign-in"}>
+                        Sign In
+                    </NavLink>
                 )}
             </div>
         </div>

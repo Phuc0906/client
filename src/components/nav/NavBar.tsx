@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./navbar.css";
 import { useNavigate } from "react-router-dom";
-
+import { ChatBubbleLeftRightIcon, HomeIcon } from "@heroicons/react/24/outline";
 const NavBar = () => {
     const [isNavBarHover, setIsNavbarHover] = useState(false);
     const navigate = useNavigate();
@@ -26,7 +26,23 @@ const NavBar = () => {
                     <div
                         onClick={() => {
                             navigate("/");
-                            window.location.reload();
+                        }}
+                        className={`${
+                            isNavBarHover ? "pl-10" : "pl-4"
+                        } flex gap-3 relative items-center transition-colors duration-100 hover:bg-gray-100 hover:bg-opacity-10 px-5 py-1.5 w-full`}>
+                        <div>
+                            <HomeIcon className="w-12 h-12 text-white"></HomeIcon>
+                        </div>
+                        <div
+                            className={`${
+                                isNavBarHover ? "left-32" : "-left-80"
+                            } absolute w-[200px] transition-all duration-300 text-green-300 text-2xl`}>
+                            <button>Home</button>
+                        </div>
+                    </div>
+                    <div
+                        onClick={() => {
+                            navigate("/");
                         }}
                         className={`${
                             isNavBarHover ? "pl-10" : "pl-4"
@@ -54,29 +70,20 @@ const NavBar = () => {
                         </div>
                     </div>
                     <div
+                        onClick={() => {
+                            navigate("/chat");
+                        }}
                         className={`${
                             isNavBarHover ? "pl-10" : "pl-4"
                         } flex gap-3 relative items-center transition-colors duration-100 hover:bg-gray-100 hover:bg-opacity-10 px-5 py-1.5 w-full `}>
                         <div>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="#FFFFFF"
-                                className="w-12 h-12">
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-                                />
-                            </svg>
+                            <ChatBubbleLeftRightIcon className="w-12 h-12 text-white"></ChatBubbleLeftRightIcon>
                         </div>
                         <div
                             className={`${
                                 isNavBarHover ? "left-32" : "-left-80"
                             } absolute w-[200px] transition-all duration-300 text-green-300 text-2xl`}>
-                            <button>Grammar</button>
+                            <button>Chat</button>
                         </div>
                     </div>
 
