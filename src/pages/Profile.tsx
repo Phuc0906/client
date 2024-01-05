@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../context/auth-context";
 import { UserIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import InfoDialog from "../components/infoDialog/InfoDialog";
-import { updateProfile, updateEmail } from "firebase/auth";
+import { updateProfile, updateEmail, updatePassword } from "firebase/auth";
 import { toast } from "react-toastify";
 
 const Profile: React.FC = () => {
@@ -26,7 +26,11 @@ const Profile: React.FC = () => {
         window.location.reload();
       }, 2000);
     } else if (type === "password") {
-      // setPassword(newInfo);
+      await updateUserPassword(newInfo);
+      setIsDialogOpen(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
       setIsDialogOpen(false);
     }
     // } else if (type === "email") {
@@ -58,6 +62,17 @@ const Profile: React.FC = () => {
   //       console.error("Error updating profile:", error);
   //     });
   // };
+
+  const updateUserPassword = async (newInfo: string) => {
+    try {
+      await updatePassword(user, newInfo);
+      console.log("Password updated successfully!");
+      toast.success("Update successfully");
+    } catch (error) {
+      console.error("Error updating Password:", error);
+      toast.error("Fail to update");
+    }
+  };
 
   const handleCancel = () => {
     setIsDialogOpen(false);
@@ -109,7 +124,10 @@ const Profile: React.FC = () => {
               <h4 className="font-medium">Password </h4>
 
               <div className="">
-                <button className="flex items-center gap-1 hover:scale-110">
+                <button
+                  onClick={() => handleEdit("password")}
+                  className="flex items-center gap-1 hover:scale-110"
+                >
                   <PencilSquareIcon className="w-5 h-5"></PencilSquareIcon>
                   <span className="text-md">Edit</span>
                 </button>
