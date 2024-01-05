@@ -6,6 +6,7 @@ import { AuthProvider } from "./context/auth-context";
 import { ModeProvider } from "./context/mode-context";
 import PageLayout from "./components/layout/PageLayout";
 import HomePage from "./pages/HomePage";
+import PaymentPage from "./pages/PaymentPage";
 
 const App = () => {
     return (
@@ -22,6 +23,7 @@ const App = () => {
                     />
                     <Route element={<PageLayout />}>
                         <Route element={<HomePage></HomePage>} path="/" />
+                        <Route element={<PaymentPage/>} path="/payment" />
                     </Route>
                 </Routes>
             </ModeProvider>
