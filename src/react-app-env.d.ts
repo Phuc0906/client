@@ -1,4 +1,6 @@
 /// <reference types="react-scripts" />
+import {Dispatch, SetStateAction} from "react";
+
 type FormValues = {
     fullname?: string;
     email: string;
@@ -11,4 +13,5 @@ interface Coordinate {
 }
 interface userInputProp {
     className?: string;
+    setText?: Dispatch<SetStateAction<string>>;
 }

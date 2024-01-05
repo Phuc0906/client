@@ -13,6 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
+import {FormValues} from "../react-app-env";
 const validationSchema = yup.object().shape({
     fullname: yup.string(),
     email: yup.string().required(),
@@ -51,6 +52,7 @@ const SignInPage = () => {
     useEffect(() => {
         const errorArr = Object.values(errors);
         if (errorArr.length > 0) {
+            // @ts-ignore
             toast.error(errorArr[0].message);
         }
     }, [errors]);

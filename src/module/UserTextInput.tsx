@@ -1,15 +1,19 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { useMode } from "../context/mode-context";
+import {userInputProp} from "../react-app-env";
 
-const UserTextInput: React.FC<userInputProp> = ({ className }) => {
+const UserTextInput: React.FC<userInputProp> = ({ className, setText }) => {
     const texteraRef = useRef<HTMLTextAreaElement | null>(null);
-    const [text, setText] = useState<string>("");
+    const [text, setUserText] = useState<string>("");
     const [texteraHeight, setTexteraHeight] = useState("auto");
     //@ts-ignore
     const { mode } = useMode();
     //Function
     const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setText(e.target.value);
+        setUserText(e.target.value);
+        if (setText) {
+            setText(e.target.value);
+        }
     };
 
     useLayoutEffect(() => {
