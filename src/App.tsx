@@ -7,6 +7,7 @@ import { ModeProvider } from "./context/mode-context";
 import PageLayout from "./components/layout/PageLayout";
 import HomePage from "./pages/HomePage";
 import PaymentPage from "./pages/PaymentPage";
+import DocumentsPage from "./pages/DocumentsPage";
 
 const App = () => {
     return (
@@ -22,8 +23,9 @@ const App = () => {
                         element={<SignInPage></SignInPage>}
                     />
                     <Route element={<PageLayout />}>
-                        <Route element={<HomePage></HomePage>} path="/" />
+                        <Route element={<DocumentsPage></DocumentsPage>} path="/" />
                         <Route element={<PaymentPage/>} path="/payment" />
+                        <Route element={<HomePage></HomePage>} path="/grammar" />
                     </Route>
                 </Routes>
             </ModeProvider>

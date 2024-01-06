@@ -54,6 +54,10 @@ const NavBar = () => {
                         </div>
                     </div>
                     <div
+                        onClick={() => {
+                            navigate("/grammar");
+                            window.location.reload();
+                        }}
                         className={`${
                             isNavBarHover ? "pl-10" : "pl-4"
                         } flex gap-3 relative items-center transition-colors duration-100 hover:bg-gray-100 hover:bg-opacity-10 px-5 py-1.5 w-full `}>

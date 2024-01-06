@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {FileProps} from "../../typing/File";
+import {useMode} from "../../context/mode-context";
 
 type DocumentCardProps = {
     file: FileProps | null
@@ -8,15 +9,19 @@ type DocumentCardProps = {
 
 const DocumentCard = ({file}: DocumentCardProps) => {
     const navigate = useNavigate();
+    // @ts-ignore
+    const {downloadRequest, setDownloadRequest} = useMode();
 
 
     return <div onClick={() => {
-        navigate('/document-converter');
-        window.location.reload();
+        if (file === null) {
+            navigate('/document-converter');
+            window.location.reload();
+        }
     }} className={`flex flex-col w-[195px] h-[180px]  justify-start shadow-xl transition-all duration-300 rounded-xl hover:shadow-2xl`}>
 
         {(file !== null) ? <div className={`border-2 hover:text-blue-500 transition-all duration-300 border-gray-300 w-full h-2/3 pl-3 py-2 rounded-t-xl flex flex-col items-center gap-4 justify-start`}>
-            <div className="w-full text-left ">
+            <div className="w-full text-left break-words h-[100px] overflow-hidden">
                 <label>{file.fileName}</label>
             </div>
         </div> : <div className={`border-2 hover:text-blue-500 transition-all duration-300 border-gray-300 w-full h-2/3 px-14 py-2 rounded-t-xl flex flex-col items-center gap-4 justify-start`}>
@@ -39,7 +44,10 @@ const DocumentCard = ({file}: DocumentCardProps) => {
                 <label>{(file !== null) ? file.dateUpload : 'Upload'}</label>
             </div>
             {file !== null ? <div className={`flex justify-center items-center gap-1`}>
-                <div className={`hover:text-blue-400`}>
+                <div onClick={() => {
+                    console.log("Download click")
+                    setDownloadRequest(!downloadRequest);
+                }} className={`hover:text-blue-400`}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                     </svg>

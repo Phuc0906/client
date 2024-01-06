@@ -5,7 +5,7 @@ import {
     createContext,
     SetStateAction,
     Dispatch,
-    ReactNode,
+    ReactNode, useEffect,
 } from "react";
 import { useAuth } from "./auth-context";
 import {base64ToFile, downloadFile} from "../utils/utils";
@@ -17,6 +17,13 @@ type ModeContextPropsType = {
 
 interface ModeProviderProps {
     children: ReactNode;
+}
+
+export type FileProps = {
+    document_id: string,
+    fileName: string,
+    userId: string,
+    dateUpload: string
 }
 
 const ModeContext = createContext<ModeContextPropsType | null>(null);
@@ -31,8 +38,20 @@ function ModeProvider(props: ModeProviderProps) {
     const [documentId, setDocumentId] = useState<string>('');
     const [slidingWidth, setSlidingWidth] = useState<number>(0);
     const [userText, setUserText] = useState<string>('');
+    const [downloadRequest, setDownloadRequest] = useState(false);
     // @ts-ignore
     const { user } = useAuth();
+
+    const [userFiles, setUserFiles] = useState<FileProps[]>([]);
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_URL}/api/file?uid=${user?.uid}`).then(res => {
+            console.log(res.data);
+            setUserFiles(res.data);
+        }).catch(err => {
+
+        })
+    }, [user])
 
     //functions
     const onFileUploadHandle = () => {
@@ -108,8 +127,11 @@ function ModeProvider(props: ModeProviderProps) {
         appearance,
         setAppearance,
         slidingWidth,
+        userFiles,
         userText,
-        setUserText
+        setUserText,
+        downloadRequest,
+        setDownloadRequest
     };
     return (
         <ModeContext.Provider {...props} value={value}></ModeContext.Provider>
