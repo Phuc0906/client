@@ -33,11 +33,6 @@ const Profile: React.FC = () => {
       }, 2000);
       setIsDialogOpen(false);
     }
-    // } else if (type === "email") {
-    //   await updateUserEmail(newInfo);
-    //   setIsDialogOpen(false);
-    //   window.location.reload();
-    // }
   };
 
   const updateUsername = async (newInfo: string) => {
@@ -52,16 +47,6 @@ const Profile: React.FC = () => {
       toast.error("Fail to update");
     }
   };
-
-  // const updateUserEmail = async (newInfo: string) => {
-  //   await updateEmail(auth.currentUser ? auth.currentUser : user, newInfo)
-  //     .then(() => {
-  //       console.log("Profile updated successfully!");
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error updating profile:", error);
-  //     });
-  // };
 
   const updateUserPassword = async (newInfo: string) => {
     try {
@@ -79,12 +64,12 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="h-full mt-10">
+    <div className="h-full">
       {user && (
         <div className="h-fit w-4/5 bg-white p-10">
           <div className="flex gap-5 items-center mb-5">
             <UserIcon className="w-5 h-5"></UserIcon>
-            <h2 className="font-semibold">Account details</h2>
+            <h2 className="text-2xl font-semibold">Account details</h2>
           </div>
           <div className="flex-col ms-10">
             {/* Name */}

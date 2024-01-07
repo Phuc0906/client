@@ -8,14 +8,14 @@ const PageLayout: React.FC = () => {
     // @ts-ignore
     const { appearance } = useMode();
     return (
-        <div>
+        <div >
             <Header className={`${appearance}`}></Header>
             <div className="relative">
                 <NavBar></NavBar>
                 <div
                     className={`fixed inset-0 top-[48px] right-0 bottom-0 left-[80px] ${
                         appearance === "dark" ? "bg-[#121212]" : ""
-                    }`}>
+                    } overflow-scroll`}>
                     <Outlet></Outlet>
                 </div>
             </div>

@@ -6,7 +6,7 @@ import { AuthProvider } from "./context/auth-context";
 import { ModeProvider } from "./context/mode-context";
 import PageLayout from "./components/layout/PageLayout";
 import HomePage from "./pages/HomePage";
-import Profile from "./pages/Profile";
+import AccountPage from "./pages/AccountPage";
 
 const App = () => {
   return (
@@ -19,7 +19,7 @@ const App = () => {
             <Route element={<HomePage></HomePage>} path="/" />
           </Route>
           <Route element={<PageLayout />}>
-            <Route element={<Profile></Profile>} path="/profile" />
+            <Route element={<AccountPage></AccountPage>} path="/profile" />
           </Route>
         </Routes>
       </ModeProvider>
