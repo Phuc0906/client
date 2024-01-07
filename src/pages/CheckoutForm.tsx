@@ -60,7 +60,7 @@ const CheckoutForm = () => {
             elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
-                return_url: "http://localhost:3000",
+                return_url: "http://localhost:3000/payment_success",
             },
         });
 
@@ -85,6 +85,9 @@ const CheckoutForm = () => {
 
     return (
         <form id="payment-form" onSubmit={handleSubmit}>
+            <div className="w-full text-left break-words h-[50px] overflow-hidden">
+                <label>Get premium for  ONLY: 1.99$</label>
+            </div>
             <PaymentElement id="payment-element" options={paymentElementOptions} />
             <button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
