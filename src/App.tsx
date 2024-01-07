@@ -7,6 +7,7 @@ import { ModeProvider } from "./context/mode-context";
 import PageLayout from "./components/layout/PageLayout";
 import HomePage from "./pages/HomePage";
 import AccountPage from "./pages/AccountPage";
+import {AccountPageModeProvider} from "./context/account-page-context";
 
 const App = () => {
   return (
@@ -19,7 +20,7 @@ const App = () => {
             <Route element={<HomePage></HomePage>} path="/" />
           </Route>
           <Route element={<PageLayout />}>
-            <Route element={<AccountPage></AccountPage>} path="/profile" />
+            <Route element={<AccountPageModeProvider><AccountPage></AccountPage></AccountPageModeProvider>} path="/profile" />
           </Route>
         </Routes>
       </ModeProvider>
