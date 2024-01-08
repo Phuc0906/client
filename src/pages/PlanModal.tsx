@@ -23,8 +23,8 @@ const PlanModal = ({className}: PlanModalProps) => {
         <div className={`mt-6 flex items-center justify-end gap-5`}>
             <button onClick={() => {
                 disablePlanModal()
-            }} className={`text-blue-500`}>Cancel</button>
-            <button className={`text-white bg-blue-500 px-4 py-1.5 rounded-lg hover:bg-blue-900`}>Update</button>
+            }} className={`text-blue-500 bg-white w-fit shadow-none`}>Cancel</button>
+            <button className={`text-white bg-blue-500 px-4 py-1.5 rounded-lg hover:bg-blue-900 w-fit shadow-none`}>Update</button>
         </div>
     </div>
 }

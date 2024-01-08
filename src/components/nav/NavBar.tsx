@@ -50,7 +50,7 @@ const NavBar = () => {
                             className={`${
                                 isNavBarHover ? "left-32" : "-left-80"
                             } absolute w-[200px] transition-all duration-300 text-green-300 text-2xl`}>
-                            <button>My Document</button>
+                            <button className={`bg-transparent w-fit shadow-none`}>My Document</button>
                         </div>
                     </div>
                     <div
@@ -80,7 +80,7 @@ const NavBar = () => {
                             className={`${
                                 isNavBarHover ? "left-32" : "-left-80"
                             } absolute w-[200px] transition-all duration-300 text-green-300 text-2xl`}>
-                            <button>Grammar</button>
+                            <button className={`bg-transparent w-fit shadow-none`}>Grammar</button>
                         </div>
                     </div>
 
@@ -111,7 +111,7 @@ const NavBar = () => {
                             className={`${
                                 isNavBarHover ? "left-32" : "-left-80"
                             } absolute w-[200px] transition-all duration-300 text-green-300 text-2xl`}>
-                            <button>Premium</button>
+                            <button className={`bg-transparent w-fit shadow-none`}>Premium</button>
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@ const NavBar = () => {
                     className={`${
                         isNavBarHover ? "left-32" : "-left-80"
                     } absolute w-[200px] transition-all duration-300 text-green-300 text-2xl`}>
-                    <button className="text-2xl">Sign out</button>
+                    <button className={`bg-transparent w-fit shadow-none text-2xl`}>Sign out</button>
                 </div>
             </div>
         </div>

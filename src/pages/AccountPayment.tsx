@@ -18,7 +18,7 @@ const AccountPayment = () => {
                         <label>Credit Card</label>
                     </div>
                 </div>
-                <button className={`text-blue-400 font-semibold`}>Update</button>
+                <button className={`text-blue-400 font-semibold bg-white w-fit shadow-none`}>Update</button>
             </div>
         </div>
     </div>

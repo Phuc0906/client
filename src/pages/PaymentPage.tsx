@@ -3,10 +3,6 @@ import {Appearance, loadStripe, StripeElementsOptions} from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import './payment.css'
-import HeaderUserInput from "../module/HeaderUserInput";
-import UserTextInput from "../module/UserTextInput";
-import UserFileInput from "../module/UserFileInput";
-import {Button} from "../components/button";
 
 const stripePromise = loadStripe("pk_test_51OV4ZODWIjcWzX8v1BaoXK7gRh9EeM63Ogc6PJB1CQZW5rwcLBvDcJ0BQR2vM2XPAsQhZCXjQGV2zYfJ8e69QcuJ00jLJagLK0");
 

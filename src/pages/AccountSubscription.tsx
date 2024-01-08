@@ -37,7 +37,7 @@ const AccountSubscription = () => {
                     </div>
                     <button onClick={() => {
                         enablePlanModal();
-                    }} className={`text-blue-400`}>Change</button>
+                    }} className={`text-blue-400 bg-white w-fit shadow-none`}>Change</button>
                 </div>
             </div>
             {/*    Showing announcement on auto-charge*/}

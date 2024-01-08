@@ -79,7 +79,7 @@ const Profile: React.FC = () => {
               <div className="flex justify-end">
                 <button
                   onClick={() => handleEdit("username")}
-                  className="flex items-center gap-1 hover:scale-110"
+                  className="flex items-center gap-1 hover:scale-110 text-black bg-white w-fit shadow-none"
                 >
                   <PencilSquareIcon className="w-5 h-5"></PencilSquareIcon>
                   <span className="text-md">Edit</span>
@@ -111,7 +111,7 @@ const Profile: React.FC = () => {
               <div className="">
                 <button
                   onClick={() => handleEdit("password")}
-                  className="flex items-center gap-1 hover:scale-110"
+                  className="flex items-center gap-1 hover:scale-110 bg-white text-black w-fit shadow-none"
                 >
                   <PencilSquareIcon className="w-5 h-5"></PencilSquareIcon>
                   <span className="text-md">Edit</span>
