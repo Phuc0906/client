@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {CheckBox} from "../components/checkbox";
-import planModal from "./PlanModal";
+import {useAccountPageMode} from "../context/account-page-context";
 
 export type PlanProps = {
     id: number,
@@ -11,11 +11,10 @@ export type PlanProps = {
 
 type ProductPlanContainerProps = {
     plan: PlanProps;
-    chosenPlan: number
-    setChosenPlan: Dispatch<SetStateAction<number>>;
 }
 
-const ProductPlanContainer = ({plan, chosenPlan, setChosenPlan}: ProductPlanContainerProps) => {
+const ProductPlanContainer = ({plan}: ProductPlanContainerProps) => {
+    const {setChosenPlan, chosenPlan} = useAccountPageMode();
     const [planSelected, setPlanSelected] = useState(false);
 
     useEffect(() => {
@@ -27,11 +26,15 @@ const ProductPlanContainer = ({plan, chosenPlan, setChosenPlan}: ProductPlanCont
     }, [chosenPlan])
 
     return <div onClick={() => {
+        if (planSelected) {
+            setChosenPlan(-1);
+        }else {
+            setChosenPlan(plan.id);
+        }
         setPlanSelected(true);
-        setChosenPlan(plan.id);
+
     }} className={`flex items-start gap-4 hover:bg-gray-100 px-3 py-2 ${planSelected ? 'bg-gray-100' : ''}`}>
         <CheckBox onClick={(selected) => {
-
             setPlanSelected(selected);
         }} checked={planSelected}/>
         <div className={``}>

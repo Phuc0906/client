@@ -1,6 +1,6 @@
 import React  from "react";
 import {CurrencyDollarIcon} from "@heroicons/react/24/outline";
-import visaLogo from '../assests/visa.png';
+import visaLogo from '../../assests/visa.png';
 
 const AccountPayment = () => {
     return <div className={`bg-white w-full`}>

@@ -1,14 +1,17 @@
 import React, {createContext, Dispatch, ReactNode, SetStateAction, useContext, useState} from "react";
 import AccountPage from "../pages/AccountPage";
 import {PlanProps} from "../pages/ProductPlanContainer";
+import {set} from "react-hook-form";
 
 type AccountPageContextProps = {
     planVisibility: boolean,
     enablePlanModal: () => void,
     disablePlanModal: () => void,
     chosenPlan: number,
-    setChosenPlan: Dispatch<SetStateAction<number>>;
-    plans: PlanProps[]
+    setChosenPlan: Dispatch<SetStateAction<number>>,
+    plans: PlanProps[],
+    paymentModal: boolean,
+    setPaymentModal: Dispatch<SetStateAction<boolean>>;
 }
 
 type AccountContextProps = {
@@ -41,6 +44,7 @@ const AccountPageContext = createContext<AccountPageContextProps | undefined>(un
 function AccountPageModeProvider(props: AccountContextProps) {
     const [planModalVisibility, setPlanVisibility] = useState<boolean>(false);
     const [chosenPlan, setChosenPlan] = useState(-1);
+    const [paymentModal, setPaymentModal] = useState(false);
 
     const enablePlanModal = () => {
         setPlanVisibility(true);
@@ -56,7 +60,9 @@ function AccountPageModeProvider(props: AccountContextProps) {
         disablePlanModal : disablePlanModal,
         chosenPlan: chosenPlan,
         setChosenPlan: setChosenPlan,
-        plans: plans
+        plans: plans,
+        paymentModal: paymentModal,
+        setPaymentModal: setPaymentModal
     }
 
     return <AccountPageContext.Provider {...props} value={value}></AccountPageContext.Provider>

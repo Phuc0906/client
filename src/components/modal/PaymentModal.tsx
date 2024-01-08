@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Appearance, loadStripe, StripeElementsOptions} from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "../form/CheckoutForm";
-import './payment.css'
+import CheckoutForm from "../../form/CheckoutForm";
+import './payment.css';
 
 const stripePromise = loadStripe("pk_test_51OV4ZODWIjcWzX8v1BaoXK7gRh9EeM63Ogc6PJB1CQZW5rwcLBvDcJ0BQR2vM2XPAsQhZCXjQGV2zYfJ8e69QcuJ00jLJagLK0");
 
-const PaymentPage = () => {
+const PaymentModal = () => {
+
     const [clientSecret, setClientSecret] = useState("");
 
     useEffect(() => {
@@ -28,15 +29,17 @@ const PaymentPage = () => {
         appearance,
     };
 
-    return <div className="flex flex-col w-full h-full gap-4 px-4 py-10 mx-auto overflow-hidden">
-        <div className="w-full max-w-3xl mx-auto">
-            {clientSecret && (
-                <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm />
-                </Elements>
-            )}
+    return <div className={`h-full w-full bg-white rounded-xl p-5 `}>
+        <div className="flex flex-col w-full h-full gap-4 px-4 py-10 mx-auto overflow-hidden">
+            <div className="w-full max-w-3xl mx-auto">
+                {clientSecret && (
+                    <Elements options={options} stripe={stripePromise}>
+                        <CheckoutForm />
+                    </Elements>
+                )}
+            </div>
         </div>
     </div>
 }
 
-export default PaymentPage;
+export default PaymentModal;

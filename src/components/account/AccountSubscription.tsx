@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {UserIcon} from "@heroicons/react/24/outline";
 import {ClipboardDocumentListIcon} from "@heroicons/react/24/outline";
-import {useAccountPageMode} from "../context/account-page-context";
+import {useAccountPageMode} from "../../context/account-page-context";
 
 const AccountSubscription = () => {
     const {enablePlanModal, chosenPlan} = useAccountPageMode();
