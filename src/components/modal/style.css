@@ -1,0 +1,11 @@
+.download-modal {
+    height: 0px;
+    width: 700px;
+    max-height: 100%;
+    overflow: hidden;
+    transition: height 0.5s linear;
+}
+
+.request {
+    height: 300px;
+}

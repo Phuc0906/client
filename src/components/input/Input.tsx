@@ -1,5 +1,6 @@
 import React, { InputHTMLAttributes } from "react";
 import { useController, UseControllerProps } from "react-hook-form";
+import {FormValues} from "../../react-app-env";
 
 type InputProps = UseControllerProps<FormValues> &
     InputHTMLAttributes<HTMLInputElement>;

@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, db } from "../firebase/firebase-config";
 import { addDoc, collection } from "firebase/firestore";
+import {FormValues} from "../react-app-env";
 
 const validationSchema = yup.object().shape({
     fullname: yup.string().required(),
@@ -69,6 +70,7 @@ const SignUpPage = () => {
     useEffect(() => {
         const errorArr = Object.values(errors);
         if (errorArr.length > 0) {
+            // @ts-ignore
             toast.error(errorArr[0].message);
         }
     }, [errors]);

@@ -13,8 +13,8 @@ interface AuthContextProps {
 }
 
 export type AuthContextPropsType = {
-    user: User | null
-}
+    user: User | null;
+};
 
 const AuthContext = createContext<AuthContextPropsType | null>(null);
 
@@ -27,13 +27,13 @@ function AuthProvider({ children }: AuthContextProps) {
                 setUserInfo(user);
             }
         });
-
-        // Cleanup function
         return () => unsubscribe();
     }, []);
 
     return (
-        <AuthContext.Provider value={{user: userInfo}}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ user: userInfo }}>
+            {children}
+        </AuthContext.Provider>
     );
 }
 
