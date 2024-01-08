@@ -3,6 +3,7 @@ import Header from "../header/Header";
 import NavBar from "../nav/NavBar";
 import { Outlet } from "react-router-dom";
 import { useMode } from "../../context/mode-context";
+import DownloadStatusModal from "../modal/DownloadStatusModal";
 
 const PageLayout: React.FC = () => {
     // @ts-ignore
@@ -18,6 +19,7 @@ const PageLayout: React.FC = () => {
                     } overflow-scroll`}>
                     <Outlet></Outlet>
                 </div>
+                <DownloadStatusModal/>
             </div>
         </div>
     );
