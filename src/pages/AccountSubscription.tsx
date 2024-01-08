@@ -1,10 +1,23 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {UserIcon} from "@heroicons/react/24/outline";
 import {ClipboardDocumentListIcon} from "@heroicons/react/24/outline";
 import {useAccountPageMode} from "../context/account-page-context";
 
 const AccountSubscription = () => {
-    const {enablePlanModal} = useAccountPageMode();
+    const {enablePlanModal, chosenPlan} = useAccountPageMode();
+    const [displayPlan, setDisplayPlan] = useState<string>('Free-trial');
+
+    useEffect(() => {
+        if (chosenPlan === -1) {
+            setDisplayPlan('Free-trial')
+        }else if (chosenPlan === 0) {
+            setDisplayPlan('Annual')
+        }else if (chosenPlan === 1) {
+            setDisplayPlan('Quarterly')
+        }else if (chosenPlan === 2) {
+            setDisplayPlan('Monthly')
+        }
+    }, [chosenPlan])
 
     return <div className={`w-full bg-white`}>
         <div className="h-fit w-4/5 bg-white p-10">
@@ -20,7 +33,7 @@ const AccountSubscription = () => {
                 </div>
                 <div className={`mt-2 flex items-center justify-start gap-12`}>
                     <div className={`text-lg `}>
-                        <label>Monthly</label>
+                        <label>{displayPlan}</label>
                     </div>
                     <button onClick={() => {
                         enablePlanModal();
