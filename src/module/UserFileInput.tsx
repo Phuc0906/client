@@ -6,12 +6,14 @@ import {userInputProp} from "../react-app-env";
 
 const UserFileInput: React.FC<userInputProp> = ({ className }) => {
     // @ts-ignore
-    const { selectedFile, setSelectedFile } = useMode();
+    const { selectedFile, setSelectedFile, setStartDownload, setDoneProcess } = useMode();
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         // @ts-ignore
         const file = e.target.files[0];
         console.log("File: ", file);
         setSelectedFile(file);
+        setStartDownload(false);
+        setDoneProcess(false);
     };
 
 

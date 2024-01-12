@@ -88,12 +88,12 @@ const Menu: React.FC = () => {
       </svg>
       <ul
         className={`absolute rounded-md right-0 ${
-          appearance === "dark" ? "bg-[#202020] text-white" : ""
+          appearance === "dark" ? "bg-[#202020] text-white" : "bg-white"
         } shadow-lg top-full w-60 z-50 ${
           show ? "opacity-100 visible" : "opacity-0 invisible"
         } transition-all text-[#333]`}
       >
-        <li className="p-2 select-none">
+        <li className="p-2 select-none break-words">
           <p>Email</p>
           <p>{user.email}</p>
         </li>

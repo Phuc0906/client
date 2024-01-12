@@ -40,6 +40,9 @@ function ModeProvider(props: ModeProviderProps) {
     const [userText, setUserText] = useState<string>('');
     const [downloadRequest, setDownloadRequest] = useState(false);
     const [outputText, setOutputText] = useState<string | undefined>('');
+    const [startDownload, setStartDownload] = useState(false);
+    const [downloadFileName, setDownloadFileName] = useState('document.docx');
+    const [doneProcess, setDoneProcess] = useState(false);
     // @ts-ignore
     const { user } = useAuth();
 
@@ -59,6 +62,8 @@ function ModeProvider(props: ModeProviderProps) {
         const formData = new FormData();
         // @ts-ignore
         formData.append("file", selectedFile);
+        setStartDownload(true);
+        setDoneProcess(false);
         //TODO:  Upload user File
         axios.post(`http://localhost:8080/api/file?uid=${user?.uid}`, formData, {
                 onDownloadProgress: (progressEvent) => {
@@ -88,6 +93,7 @@ function ModeProvider(props: ModeProviderProps) {
                     ).toFixed(2);
                     const slidingWidthOnPercentage = parseInt(String(((parseFloat(percentageNum) / 100.0) * 450)))
                     setDocumentId(percentageDatasplited[percentageDatasplited.length - 1]);
+                    console.log(percentageDatasplited[percentageDatasplited.length - 1])
                     setPercentage(percentageNum);
                     setSlidingWidth(slidingWidthOnPercentage)
                 },
@@ -96,6 +102,7 @@ function ModeProvider(props: ModeProviderProps) {
                 console.log(res);
                 setSlidingWidth(450);
                 setPercentage('100');
+                setDoneProcess(true);
             })
             .catch((err) => {
                 console.log(err);
@@ -110,20 +117,19 @@ function ModeProvider(props: ModeProviderProps) {
             )
             .then((res) => {
                 console.log(res.data);
-                downloadFile(base64ToFile(res.data, "", ""), "test.docx");
+                downloadFile(base64ToFile(res.data, "", ""), `${downloadFileName}`);
+                setDownloadRequest(false);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
 
+    useEffect(() => {
+        console.log("Change " + documentId);
+    }, [documentId])
+
     const handleFixUserText = () => {
-        // console.log(`https://polite-horribly-cub.ngrok-free.app/generate_code?prompts='${userText}'`)
-        // axios.get(`https://polite-horribly-cub.ngrok-free.app/generate_code?prompts='${userText}'`).then(res => {
-        //     console.log(res);
-        // }).catch(err => {
-        //     console.log(err);
-        // })
         axios.post(`http://localhost:8080/api/file/paragraph`, {
             paragraph: userText
         }).then(res => {
@@ -151,7 +157,16 @@ function ModeProvider(props: ModeProviderProps) {
         downloadRequest,
         setDownloadRequest,
         outputText,
-        handleFixUserText
+        handleFixUserText,
+        startDownload,
+        setStartDownload,
+        documentId,
+        setDocumentId,
+        handleDownloadFile,
+        downloadFileName,
+        setDownloadFileName,
+        doneProcess,
+        setDoneProcess
     };
     return (
         <ModeContext.Provider {...props} value={value}></ModeContext.Provider>

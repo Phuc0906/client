@@ -10,12 +10,12 @@ type DocumentCardProps = {
 const DocumentCard = ({file}: DocumentCardProps) => {
     const navigate = useNavigate();
     // @ts-ignore
-    const {downloadRequest, setDownloadRequest} = useMode();
+    const {downloadRequest, setDownloadRequest, setDocumentId, setDownloadFileName} = useMode();
 
 
     return <div onClick={() => {
         if (file === null) {
-            navigate('/document-converter');
+            navigate('/grammar');
             window.location.reload();
         }
     }} className={`flex flex-col w-[195px] h-[180px]  justify-start shadow-xl transition-all duration-300 rounded-xl hover:shadow-2xl`}>
@@ -46,6 +46,8 @@ const DocumentCard = ({file}: DocumentCardProps) => {
             {file !== null ? <div className={`flex justify-center items-center gap-1`}>
                 <div onClick={() => {
                     console.log("Download click")
+                    setDocumentId(file?.document_id);
+                    setDownloadFileName(file?.fileName)
                     setDownloadRequest(!downloadRequest);
                 }} className={`hover:text-blue-400`}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

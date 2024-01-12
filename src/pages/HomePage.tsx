@@ -10,14 +10,21 @@ import {AuthContext, AuthContextPropsType} from "../context/auth-context";
 
 const HomePage: React.FC = () => {
     // @ts-ignore
-    const { mode, onFileUploadHandle, appearance, percentage, slidingWidth, userText, setUserText, outputText, handleFixUserText } = useMode();
+    const { mode, onFileUploadHandle, appearance, percentage, slidingWidth, doneProcess, setUserText, outputText, handleFixUserText, startDownload, handleDownloadFile } = useMode();
     // @ts-ignore
     const { user } = useContext<AuthContextPropsType>(AuthContext);
+
+    const [buttonText, setButtonText] = useState('Correct');
+
+    useEffect(()=>{
+        if(percentage === 100) {
+            setButtonText('Download')
+        }
+    }, [percentage])
 
     //Functions
     const hanldeTextUpload = () => {
         // console.log("USER TEXT: " + userText);
-
     };
 
 
@@ -51,7 +58,7 @@ const HomePage: React.FC = () => {
                     <UserFileInput  className={`${appearance}`}></UserFileInput>
                 )}
             </div>
-            {mode ? <div className="w-[450px] h-10 mx-auto rounded-xl border-2 border-green-600">
+            {(mode && startDownload ) ? <div className="w-[450px] h-10 mx-auto rounded-xl border-2 border-green-600">
                 <div style={{ width: `${slidingWidth}px` }} className={` h-full bg-green-400  rounded-xl transition-all duration-300`}>
 
                 </div>
@@ -61,8 +68,8 @@ const HomePage: React.FC = () => {
             </div> : null}
             <Button
                 className="mt-auto"
-                onClick={mode ? onFileUploadHandle : handleFixUserText}>
-                Correct
+                onClick={mode ? ((doneProcess) ? handleDownloadFile : onFileUploadHandle) : handleFixUserText}>
+                {(doneProcess) ? 'Download' : "Correct"}
             </Button>
         </div>
     );
