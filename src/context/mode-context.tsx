@@ -39,6 +39,7 @@ function ModeProvider(props: ModeProviderProps) {
     const [slidingWidth, setSlidingWidth] = useState<number>(0);
     const [userText, setUserText] = useState<string>('');
     const [downloadRequest, setDownloadRequest] = useState(false);
+    const [outputText, setOutputText] = useState<string | undefined>('');
     // @ts-ignore
     const { user } = useAuth();
 
@@ -116,6 +117,23 @@ function ModeProvider(props: ModeProviderProps) {
             });
     };
 
+    const handleFixUserText = () => {
+        // console.log(`https://polite-horribly-cub.ngrok-free.app/generate_code?prompts='${userText}'`)
+        // axios.get(`https://polite-horribly-cub.ngrok-free.app/generate_code?prompts='${userText}'`).then(res => {
+        //     console.log(res);
+        // }).catch(err => {
+        //     console.log(err);
+        // })
+        axios.post(`http://localhost:8080/api/file/paragraph`, {
+            paragraph: userText
+        }).then(res => {
+            console.log(res);
+            setOutputText(res.data);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
     const value = {
         mode,
         setMode,
@@ -131,7 +149,9 @@ function ModeProvider(props: ModeProviderProps) {
         userText,
         setUserText,
         downloadRequest,
-        setDownloadRequest
+        setDownloadRequest,
+        outputText,
+        handleFixUserText
     };
     return (
         <ModeContext.Provider {...props} value={value}></ModeContext.Provider>

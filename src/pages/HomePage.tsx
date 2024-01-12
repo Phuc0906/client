@@ -10,20 +10,14 @@ import {AuthContext, AuthContextPropsType} from "../context/auth-context";
 
 const HomePage: React.FC = () => {
     // @ts-ignore
-    const { mode, onFileUploadHandle, appearance, percentage, slidingWidth, userText, setUserText } = useMode();
+    const { mode, onFileUploadHandle, appearance, percentage, slidingWidth, userText, setUserText, outputText, handleFixUserText } = useMode();
     // @ts-ignore
     const { user } = useContext<AuthContextPropsType>(AuthContext);
 
     //Functions
     const hanldeTextUpload = () => {
         // console.log("USER TEXT: " + userText);
-        axios.post(`http://localhost:8080/api/file/paragraph`, {
-            paragraph: userText
-        }).then(res => {
-            console.log(res);
-        }).catch(err => {
-            console.log(err);
-        })
+
     };
 
 
@@ -35,11 +29,23 @@ const HomePage: React.FC = () => {
                         appearance === "dark" ? "text-white" : ""
                     }`}></HeaderUserInput>
                 {!mode && (
-                    <UserTextInput
-                        setText={setUserText}
-                        className={`h-full min-h-[250px] ${
-                            appearance === "dark" ? "bg-[#202020]" : ""
-                        }`}></UserTextInput>
+                    <div>
+                        <UserTextInput
+                            setText={setUserText}
+                            editable={false}
+                            placeholder={"To write text, enter or paste it here and press 'Correct'"}
+                            className={`h-full min-h-[250px] ${
+                                appearance === "dark" ? "bg-[#202020]" : ""
+                            }`}></UserTextInput>
+                        <UserTextInput
+                            setText={setUserText}
+                            editable={true}
+                            value={outputText}
+                            placeholder={"Your result"}
+                            className={`h-full min-h-[250px] mt-7 ${
+                                appearance === "dark" ? "bg-[#202020]" : ""
+                            }`}></UserTextInput>
+                    </div>
                 )}
                 {mode && (
                     <UserFileInput  className={`${appearance}`}></UserFileInput>
@@ -55,7 +61,7 @@ const HomePage: React.FC = () => {
             </div> : null}
             <Button
                 className="mt-auto"
-                onClick={mode ? onFileUploadHandle : hanldeTextUpload}>
+                onClick={mode ? onFileUploadHandle : handleFixUserText}>
                 Correct
             </Button>
         </div>

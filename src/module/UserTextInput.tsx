@@ -1,10 +1,10 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import { useMode } from "../context/mode-context";
 import {userInputProp} from "../react-app-env";
 
-const UserTextInput: React.FC<userInputProp> = ({ className, setText }) => {
+const UserTextInput: React.FC<userInputProp> = ({ className, setText , editable, placeholder, value}) => {
     const texteraRef = useRef<HTMLTextAreaElement | null>(null);
-    const [text, setUserText] = useState<string>("");
+    const [text, setUserText] = useState<string | undefined>("");
     const [texteraHeight, setTexteraHeight] = useState("auto");
     //@ts-ignore
     const { mode } = useMode();
@@ -15,6 +15,10 @@ const UserTextInput: React.FC<userInputProp> = ({ className, setText }) => {
             setText(e.target.value);
         }
     };
+
+    useEffect(() => {
+        setUserText(value);
+    }, [value]);
 
     useLayoutEffect(() => {
         if (text) {
@@ -31,8 +35,6 @@ const UserTextInput: React.FC<userInputProp> = ({ className, setText }) => {
         }
     }, [text]);
 
-    console.log(mode);
-
     return (
         <>
             {!mode && (
@@ -43,7 +45,8 @@ const UserTextInput: React.FC<userInputProp> = ({ className, setText }) => {
                         value={text}
                         style={{ height: texteraHeight }}
                         ref={texteraRef}
-                        placeholder="To write text, enter or paste it here and press 'Correct' "
+                        disabled={editable}
+                        placeholder={placeholder}
                         className="w-full mt-4 overflow-y-auto border-none resize-none max-h-[400px]focus:border-none focus:outline-none no-scrollbar flex-1 bg-inherit"></textarea>
                 </div>
             )}

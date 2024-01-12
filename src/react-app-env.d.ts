@@ -14,4 +14,7 @@ interface Coordinate {
 interface userInputProp {
     className?: string;
     setText?: Dispatch<SetStateAction<string>>;
+    editable?: boolean,
+    placeholder?: string,
+    value?: string
 }
