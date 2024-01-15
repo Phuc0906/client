@@ -16,25 +16,41 @@ export interface Condition {
     compareValue: any;
 }
 
-const useFirestore = (name: string, condition?: Condition | null) => {
+const useFirestore = (
+    name: string,
+    condition?: Condition | null,
+    hasOrdered = false
+) => {
     const [documents, setDocuments] = useState<DocumentData[]>([]);
 
     useEffect(() => {
-        const collectionRef = query(collection(db, name), orderBy("createdAt"));
+        const collectionRef = query(collection(db, name));
         const documentData: DocumentData[] = [];
         let q = collectionRef;
         if (condition) {
             if (!condition.compareValue || !condition.compareValue.length) {
                 return;
             }
-            q = query(
-                collectionRef,
-                where(
-                    condition.fieldName,
-                    condition.operator,
-                    condition.compareValue
-                )
-            );
+            if (hasOrdered) {
+                q = query(
+                    collectionRef,
+                    where(
+                        condition.fieldName,
+                        condition.operator,
+                        condition.compareValue
+                    ),
+                    orderBy("createdAt")
+                );
+            } else {
+                q = query(
+                    collectionRef,
+                    where(
+                        condition.fieldName,
+                        condition.operator,
+                        condition.compareValue
+                    )
+                );
+            }
         }
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             querySnapshot.forEach((doc) => {
@@ -47,7 +63,7 @@ const useFirestore = (name: string, condition?: Condition | null) => {
         });
 
         return () => unsubscribe();
-    }, [name, condition]);
+    }, [name, condition, hasOrdered]);
 
     return documents;
 };

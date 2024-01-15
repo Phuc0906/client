@@ -5,14 +5,39 @@ import {
     createContext,
     SetStateAction,
     Dispatch,
-    ReactNode, useEffect,
+    ReactNode,
+    useEffect,
 } from "react";
 import { useAuth } from "./auth-context";
-import {base64ToFile, downloadFile} from "../utils/utils";
+import { base64ToFile, downloadFile } from "../utils/utils";
 
-type ModeContextPropsType = {
+export type ModeContextPropsType = {
     mode: boolean;
     setMode: Dispatch<SetStateAction<boolean>>;
+    selectedFile?: File;
+    setSelectedFile: Dispatch<SetStateAction<File | undefined>>;
+    percentage: string;
+    setPercentage: Dispatch<SetStateAction<string>>;
+    onFileUploadHandle: () => void;
+    appearance: string;
+    setAppearance: Dispatch<SetStateAction<string>>;
+    slidingWidth: number;
+    userFiles: FileProps[];
+    userText: string;
+    setUserText: Dispatch<SetStateAction<string>>;
+    downloadRequest: boolean;
+    setDownloadRequest: Dispatch<SetStateAction<boolean>>;
+    outputText: string | undefined;
+    handleFixUserText: () => void;
+    startDownload: boolean;
+    setStartDownload: Dispatch<SetStateAction<boolean>>;
+    documentId: string;
+    setDocumentId: Dispatch<SetStateAction<string>>;
+    handleDownloadFile: () => void;
+    downloadFileName: string;
+    setDownloadFileName: Dispatch<SetStateAction<string>>;
+    doneProcess: boolean;
+    setDoneProcess: Dispatch<SetStateAction<boolean>>;
 };
 
 interface ModeProviderProps {
@@ -20,11 +45,11 @@ interface ModeProviderProps {
 }
 
 export type FileProps = {
-    document_id: string,
-    fileName: string,
-    userId: string,
-    dateUpload: string
-}
+    document_id: string;
+    fileName: string;
+    userId: string;
+    dateUpload: string;
+};
 
 const ModeContext = createContext<ModeContextPropsType | null>(null);
 
@@ -35,27 +60,27 @@ function ModeProvider(props: ModeProviderProps) {
     const [selectedFile, setSelectedFile] = useState<File>();
     const [percentage, setPercentage] = useState<string>("0.0");
     const [appearance, setAppearance] = useState<string>("light");
-    const [documentId, setDocumentId] = useState<string>('');
+    const [documentId, setDocumentId] = useState<string>("");
     const [slidingWidth, setSlidingWidth] = useState<number>(0);
-    const [userText, setUserText] = useState<string>('');
+    const [userText, setUserText] = useState<string>("");
     const [downloadRequest, setDownloadRequest] = useState(false);
-    const [outputText, setOutputText] = useState<string | undefined>('');
+    const [outputText, setOutputText] = useState<string | undefined>("");
     const [startDownload, setStartDownload] = useState(false);
-    const [downloadFileName, setDownloadFileName] = useState('document.docx');
+    const [downloadFileName, setDownloadFileName] = useState("document.docx");
     const [doneProcess, setDoneProcess] = useState(false);
     // @ts-ignore
     const { user } = useAuth();
-
     const [userFiles, setUserFiles] = useState<FileProps[]>([]);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/api/file?uid=${user?.uid}`).then(res => {
-            console.log(res.data);
-            setUserFiles(res.data);
-        }).catch(err => {
-
-        })
-    }, [user])
+        axios
+            .get(`${process.env.REACT_APP_API_URL}/api/file?uid=${user?.uid}`)
+            .then((res) => {
+                console.log(res.data);
+                setUserFiles(res.data);
+            })
+            .catch((err) => {});
+    }, [user]);
 
     //functions
     const onFileUploadHandle = () => {
@@ -65,7 +90,8 @@ function ModeProvider(props: ModeProviderProps) {
         setStartDownload(true);
         setDoneProcess(false);
         //TODO:  Upload user File
-        axios.post(`http://localhost:8080/api/file?uid=${user?.uid}`, formData, {
+        axios
+            .post(`http://localhost:8080/api/file?uid=${user?.uid}`, formData, {
                 onDownloadProgress: (progressEvent) => {
                     const logVal: string =
                         progressEvent.event.target.responseText.split("\n");
@@ -87,21 +113,28 @@ function ModeProvider(props: ModeProviderProps) {
                         }
                     }
                     const percentageData = logVal[i].split(":");
-                    const percentageDatasplited =  percentageData[percentageData.length - 1].split("+");
+                    const percentageDatasplited =
+                        percentageData[percentageData.length - 1].split("+");
                     const percentageNum: string = parseFloat(
                         percentageDatasplited[0]
                     ).toFixed(2);
-                    const slidingWidthOnPercentage = parseInt(String(((parseFloat(percentageNum) / 100.0) * 450)))
-                    setDocumentId(percentageDatasplited[percentageDatasplited.length - 1]);
-                    console.log(percentageDatasplited[percentageDatasplited.length - 1])
+                    const slidingWidthOnPercentage = parseInt(
+                        String((parseFloat(percentageNum) / 100.0) * 450)
+                    );
+                    setDocumentId(
+                        percentageDatasplited[percentageDatasplited.length - 1]
+                    );
+                    console.log(
+                        percentageDatasplited[percentageDatasplited.length - 1]
+                    );
                     setPercentage(percentageNum);
-                    setSlidingWidth(slidingWidthOnPercentage)
+                    setSlidingWidth(slidingWidthOnPercentage);
                 },
             })
             .then((res) => {
                 console.log(res);
                 setSlidingWidth(450);
-                setPercentage('100');
+                setPercentage("100");
                 setDoneProcess(true);
             })
             .catch((err) => {
@@ -117,7 +150,10 @@ function ModeProvider(props: ModeProviderProps) {
             )
             .then((res) => {
                 console.log(res.data);
-                downloadFile(base64ToFile(res.data, "", ""), `${downloadFileName}`);
+                downloadFile(
+                    base64ToFile(res.data, "", ""),
+                    `${downloadFileName}`
+                );
                 setDownloadRequest(false);
             })
             .catch((err) => {
@@ -127,20 +163,23 @@ function ModeProvider(props: ModeProviderProps) {
 
     useEffect(() => {
         console.log("Change " + documentId);
-    }, [documentId])
+    }, [documentId]);
 
     const handleFixUserText = () => {
-        axios.post(`http://localhost:8080/api/file/paragraph`, {
-            paragraph: userText
-        }).then(res => {
-            console.log(res);
-            setOutputText(res.data);
-        }).catch(err => {
-            console.log(err);
-        })
-    }
+        axios
+            .post(`http://localhost:8080/api/file/paragraph`, {
+                paragraph: userText,
+            })
+            .then((res) => {
+                console.log(res);
+                setOutputText(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
-    const value = {
+    const value: ModeContextPropsType = {
         mode,
         setMode,
         selectedFile,
@@ -166,7 +205,7 @@ function ModeProvider(props: ModeProviderProps) {
         downloadFileName,
         setDownloadFileName,
         doneProcess,
-        setDoneProcess
+        setDoneProcess,
     };
     return (
         <ModeContext.Provider {...props} value={value}></ModeContext.Provider>
@@ -176,7 +215,7 @@ function ModeProvider(props: ModeProviderProps) {
 function useMode() {
     const context = useContext(ModeContext);
     if (typeof context === "undefined") {
-        throw new Error("useMode must be used within AuthProvider");
+        throw new Error("useMode must be used within ModeProvider");
     }
     return context;
 }

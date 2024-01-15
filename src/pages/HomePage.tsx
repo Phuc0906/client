@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 
 import HeaderUserInput from "../module/HeaderUserInput";
 import { Button } from "../components/button";
 import UserTextInput from "../module/UserTextInput";
-import { useMode } from "../context/mode-context";
+import { ModeContextPropsType, useMode } from "../context/mode-context";
 import UserFileInput from "../module/UserFileInput";
 import axios from "axios";
 import { AuthContext, AuthContextPropsType } from "../context/auth-context";
+import useFirestore, { Condition } from "../hooks/useFiresStore";
 
 const HomePage: React.FC = () => {
-    // @ts-ignore
     const {
         mode,
         onFileUploadHandle,
@@ -22,7 +22,7 @@ const HomePage: React.FC = () => {
         handleFixUserText,
         startDownload,
         handleDownloadFile,
-    } = useMode();
+    } = useMode<ModeContextPropsType>(null);
     // @ts-ignore
     const { user } = useContext<AuthContextPropsType>(AuthContext);
 
@@ -33,6 +33,17 @@ const HomePage: React.FC = () => {
             setButtonText("Download");
         }
     }, [percentage]);
+
+    const condition = useMemo<Condition>(() => {
+        return {
+            fieldName: "uid",
+            operator: "==",
+            compareValue: user?.uid,
+        };
+    }, [user]);
+
+    const currentUser = useFirestore("users", condition);
+    console.log("Hello:", currentUser);
 
     //Functions
     const hanldeTextUpload = () => {
