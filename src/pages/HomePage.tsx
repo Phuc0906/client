@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import HeaderUserInput from "../module/HeaderUserInput";
 import { Button } from "../components/button";
@@ -6,27 +6,38 @@ import UserTextInput from "../module/UserTextInput";
 import { useMode } from "../context/mode-context";
 import UserFileInput from "../module/UserFileInput";
 import axios from "axios";
-import {AuthContext, AuthContextPropsType} from "../context/auth-context";
+import { AuthContext, AuthContextPropsType } from "../context/auth-context";
 
 const HomePage: React.FC = () => {
     // @ts-ignore
-    const { mode, onFileUploadHandle, appearance, percentage, slidingWidth, doneProcess, setUserText, outputText, handleFixUserText, startDownload, handleDownloadFile } = useMode();
+    const {
+        mode,
+        onFileUploadHandle,
+        appearance,
+        percentage,
+        slidingWidth,
+        doneProcess,
+        setUserText,
+        outputText,
+        handleFixUserText,
+        startDownload,
+        handleDownloadFile,
+    } = useMode();
     // @ts-ignore
     const { user } = useContext<AuthContextPropsType>(AuthContext);
 
-    const [buttonText, setButtonText] = useState('Correct');
+    const [buttonText, setButtonText] = useState("Correct");
 
-    useEffect(()=>{
-        if(percentage === 100) {
-            setButtonText('Download')
+    useEffect(() => {
+        if (percentage === 100) {
+            setButtonText("Download");
         }
-    }, [percentage])
+    }, [percentage]);
 
     //Functions
     const hanldeTextUpload = () => {
         // console.log("USER TEXT: " + userText);
     };
-
 
     return (
         <div className="flex flex-col w-full h-full gap-4 px-4 py-10 mx-auto overflow-hidden">
@@ -40,7 +51,9 @@ const HomePage: React.FC = () => {
                         <UserTextInput
                             setText={setUserText}
                             editable={false}
-                            placeholder={"To write text, enter or paste it here and press 'Correct'"}
+                            placeholder={
+                                "To write text, enter or paste it here and press 'Correct'"
+                            }
                             className={`h-full min-h-[250px] ${
                                 appearance === "dark" ? "bg-[#202020]" : ""
                             }`}></UserTextInput>
@@ -55,21 +68,29 @@ const HomePage: React.FC = () => {
                     </div>
                 )}
                 {mode && (
-                    <UserFileInput  className={`${appearance}`}></UserFileInput>
+                    <UserFileInput className={`${appearance}`}></UserFileInput>
                 )}
             </div>
-            {(mode && startDownload ) ? <div className="w-[450px] h-10 mx-auto rounded-xl border-2 border-green-600">
-                <div style={{ width: `${slidingWidth}px` }} className={` h-full bg-green-400  rounded-xl transition-all duration-300`}>
-
+            {mode && startDownload ? (
+                <div className="w-[450px] h-10 mx-auto rounded-xl border-2 border-green-600">
+                    <div
+                        style={{ width: `${slidingWidth}px` }}
+                        className={` h-full bg-green-400  rounded-xl transition-all duration-300`}></div>
+                    <div className="w-[120px] mx-auto text-lg">
+                        <label className="">Loading {percentage}%</label>
+                    </div>
                 </div>
-                <div className="w-[120px] mx-auto text-lg">
-                    <label className="">Loading {percentage}%</label>
-                </div>
-            </div> : null}
+            ) : null}
             <Button
                 className="mt-auto"
-                onClick={mode ? ((doneProcess) ? handleDownloadFile : onFileUploadHandle) : handleFixUserText}>
-                {(doneProcess) ? 'Download' : "Correct"}
+                onClick={
+                    mode
+                        ? doneProcess
+                            ? handleDownloadFile
+                            : onFileUploadHandle
+                        : handleFixUserText
+                }>
+                {doneProcess ? "Download" : "Correct"}
             </Button>
         </div>
     );
