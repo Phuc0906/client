@@ -132,8 +132,9 @@ function ModeProvider(props: ModeProviderProps) {
                 `${process.env.REACT_APP_API_URL}/api/file/delete-file?file=${documentId}`
             )
             .then((res) => {
-                console.log(res.data);
+                console.log("Delete success")
                 setDeleteRequest(false);
+
             })
             .catch((err) => {
                 console.log(err);
