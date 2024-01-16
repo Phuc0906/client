@@ -39,6 +39,7 @@ function ModeProvider(props: ModeProviderProps) {
     const [slidingWidth, setSlidingWidth] = useState<number>(0);
     const [userText, setUserText] = useState<string>('');
     const [downloadRequest, setDownloadRequest] = useState(false);
+    const [deleteRequest, setDeleteRequest] = useState(false);
     const [outputText, setOutputText] = useState<string | undefined>('');
     const [startDownload, setStartDownload] = useState(false);
     const [downloadFileName, setDownloadFileName] = useState('document.docx');
@@ -55,7 +56,7 @@ function ModeProvider(props: ModeProviderProps) {
         }).catch(err => {
 
         })
-    }, [user])
+    }, [user, downloadRequest, deleteRequest])
 
     //functions
     const onFileUploadHandle = () => {
@@ -125,6 +126,21 @@ function ModeProvider(props: ModeProviderProps) {
             });
     };
 
+    const handleDeleteFile = () => {
+        axios
+            .delete(
+                `${process.env.REACT_APP_API_URL}/api/file/delete-file?file=${documentId}`
+            )
+            .then((res) => {
+                console.log("Delete success")
+                setDeleteRequest(false);
+
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     useEffect(() => {
         console.log("Change " + documentId);
     }, [documentId])
@@ -156,6 +172,9 @@ function ModeProvider(props: ModeProviderProps) {
         setUserText,
         downloadRequest,
         setDownloadRequest,
+        deleteRequest,
+        setDeleteRequest,
+        handleDeleteFile,
         outputText,
         handleFixUserText,
         startDownload,

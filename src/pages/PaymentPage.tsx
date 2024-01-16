@@ -11,13 +11,17 @@ const PaymentPage = () => {
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        fetch("http://localhost:8080/api/file/payment", {
-            method: "POST",
+        fetch("http://localhost:8080/payment", {
+            method: "GET",
             headers: { "Content-Type": "application/json" },
         })
             .then((res) => res.json())
-            .then((data) => setClientSecret(data.clientSecret));
+            .then((data) => {
+                console.log("Received data:", data);
+                setClientSecret(data.clientSecret);
+            });
     }, []);
+
 
     const appearance: Appearance = {
         theme: 'stripe',
