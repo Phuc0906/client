@@ -16,7 +16,7 @@ export type AuthContextPropsType = {
     user: User | null;
 };
 
-const AuthContext = createContext<AuthContextPropsType | null>(null);
+const AuthContext = createContext<AuthContextPropsType | undefined>(undefined);
 
 function AuthProvider({ children }: AuthContextProps) {
     const [userInfo, setUserInfo] = useState<User | null>(null);

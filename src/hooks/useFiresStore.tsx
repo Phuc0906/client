@@ -8,6 +8,7 @@ import {
     where,
     WhereFilterOp,
     DocumentData,
+    getDocs
 } from "firebase/firestore";
 
 export interface Condition {
@@ -24,6 +25,7 @@ const useFirestore = (
     const [documents, setDocuments] = useState<DocumentData[]>([]);
 
     useEffect(() => {
+
         const collectionRef = query(collection(db, name));
         const documentData: DocumentData[] = [];
         let q = collectionRef;

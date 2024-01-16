@@ -9,6 +9,7 @@ import axios from "axios";
 import { AuthContext, AuthContextPropsType } from "../context/auth-context";
 import useFirestore, { Condition } from "../hooks/useFiresStore";
 
+
 const HomePage: React.FC = () => {
     const {
         mode,
@@ -22,14 +23,14 @@ const HomePage: React.FC = () => {
         handleFixUserText,
         startDownload,
         handleDownloadFile,
-    } = useMode<ModeContextPropsType>(null);
+    } = useMode();
     // @ts-ignore
     const { user } = useContext<AuthContextPropsType>(AuthContext);
 
     const [buttonText, setButtonText] = useState("Correct");
 
     useEffect(() => {
-        if (percentage === 100) {
+        if (percentage === '100') {
             setButtonText("Download");
         }
     }, [percentage]);
@@ -48,7 +49,13 @@ const HomePage: React.FC = () => {
     //Functions
     const hanldeTextUpload = () => {
         // console.log("USER TEXT: " + userText);
+
+
     };
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <div className="flex flex-col w-full h-full gap-4 px-4 py-10 mx-auto overflow-hidden">

@@ -6,13 +6,17 @@ import {
     SetStateAction,
     Dispatch,
     ReactNode,
-    useEffect,
+    useEffect, useMemo,
 } from "react";
 import { useAuth } from "./auth-context";
 import { base64ToFile, downloadFile } from "../utils/utils";
+import {set} from "react-hook-form";
+import {collection, doc as firestoreDoc, getDocs, query, updateDoc, where} from "firebase/firestore";
+import {db} from "../firebase/firebase-config";
+import useFirestore, {Condition} from "../hooks/useFiresStore";
 
 export type ModeContextPropsType = {
-    mode: boolean;
+    mode: boolean,
     setMode: Dispatch<SetStateAction<boolean>>;
     selectedFile?: File;
     setSelectedFile: Dispatch<SetStateAction<File | undefined>>;
@@ -38,6 +42,7 @@ export type ModeContextPropsType = {
     setDownloadFileName: Dispatch<SetStateAction<string>>;
     doneProcess: boolean;
     setDoneProcess: Dispatch<SetStateAction<boolean>>;
+
 };
 
 interface ModeProviderProps {
@@ -51,7 +56,7 @@ export type FileProps = {
     dateUpload: string;
 };
 
-const ModeContext = createContext<ModeContextPropsType | null>(null);
+const ModeContext = createContext<ModeContextPropsType | undefined>(undefined);
 
 function ModeProvider(props: ModeProviderProps) {
     //false: text mode
@@ -68,9 +73,9 @@ function ModeProvider(props: ModeProviderProps) {
     const [startDownload, setStartDownload] = useState(false);
     const [downloadFileName, setDownloadFileName] = useState("document.docx");
     const [doneProcess, setDoneProcess] = useState(false);
-    // @ts-ignore
     const { user } = useAuth();
     const [userFiles, setUserFiles] = useState<FileProps[]>([]);
+
 
     useEffect(() => {
         axios
@@ -180,32 +185,32 @@ function ModeProvider(props: ModeProviderProps) {
     };
 
     const value: ModeContextPropsType = {
-        mode,
-        setMode,
-        selectedFile,
-        setSelectedFile,
-        percentage,
-        setPercentage,
-        onFileUploadHandle,
-        appearance,
-        setAppearance,
-        slidingWidth,
-        userFiles,
-        userText,
-        setUserText,
-        downloadRequest,
-        setDownloadRequest,
-        outputText,
-        handleFixUserText,
-        startDownload,
-        setStartDownload,
-        documentId,
-        setDocumentId,
-        handleDownloadFile,
-        downloadFileName,
-        setDownloadFileName,
-        doneProcess,
-        setDoneProcess,
+        mode: mode,
+        setMode: setMode,
+        selectedFile: selectedFile,
+        setSelectedFile: setSelectedFile,
+        percentage: percentage,
+        setPercentage: setPercentage,
+        onFileUploadHandle: onFileUploadHandle,
+        appearance: appearance,
+        setAppearance: setAppearance,
+        slidingWidth: slidingWidth,
+        userFiles: userFiles,
+        userText: userText,
+        setUserText: setUserText,
+        downloadRequest: downloadRequest,
+        setDownloadRequest: setDownloadRequest,
+        outputText: outputText,
+        handleFixUserText: handleFixUserText,
+        startDownload: startDownload,
+        setStartDownload: setStartDownload,
+        documentId: documentId,
+        setDocumentId: setDocumentId,
+        handleDownloadFile: handleDownloadFile,
+        downloadFileName: downloadFileName,
+        setDownloadFileName: setDownloadFileName,
+        doneProcess: doneProcess,
+        setDoneProcess: setDoneProcess
     };
     return (
         <ModeContext.Provider {...props} value={value}></ModeContext.Provider>

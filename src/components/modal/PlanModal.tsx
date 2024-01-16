@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import {CheckBox} from "../checkbox";
 import ProductPlans from "../../pages/ProductPlans";
 import {useAccountPageMode} from "../../context/account-page-context";
+import {useMode} from "../../context/mode-context";
 
 type PlanModalProps = {
     className?: string
@@ -24,6 +25,7 @@ const PlanModal = ({className}: PlanModalProps) => {
 
     const handleCancelModal = () => {
         setChosenPlan(-1);
+
         disablePlanModal();
     }
 

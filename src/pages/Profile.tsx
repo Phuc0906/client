@@ -37,9 +37,11 @@ const Profile: React.FC = () => {
 
   const updateUsername = async (newInfo: string) => {
     try {
-      await updateProfile(user, {
-        displayName: newInfo,
-      });
+      if (user) {
+        await updateProfile(user, {
+          displayName: newInfo,
+        });
+      }
       console.log("Profile updated successfully!");
       toast.success("Update successfully");
     } catch (error) {
@@ -50,7 +52,9 @@ const Profile: React.FC = () => {
 
   const updateUserPassword = async (newInfo: string) => {
     try {
-      await updatePassword(user, newInfo);
+      if (user) {
+        await updatePassword(user, newInfo);
+      }
       console.log("Password updated successfully!");
       toast.success("Update successfully");
     } catch (error) {

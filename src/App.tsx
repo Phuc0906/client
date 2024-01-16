@@ -28,7 +28,7 @@ const App = () => {
                     <Route element={<PageLayout />}>
                         <Route element={<DocumentsPage></DocumentsPage>} path="/" />
                         <Route element={<PaymentPage/>} path="/payment" />
-                        <Route element={<PaymentSuccessPage/>} path="/payment_success" />
+                        <Route element={<PaymentSuccessPage/>} path="/payment_success/:plan_id" />
                         <Route element={<HomePage></HomePage>} path="/grammar" />
                         <Route element={<AccountPageModeProvider><AccountPage></AccountPage></AccountPageModeProvider>} path="/profile" />
                     </Route>
