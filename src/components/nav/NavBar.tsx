@@ -86,7 +86,7 @@ const NavBar = () => {
 
                     <div
                         onClick={() => {
-                            navigate("/payment");
+                            navigate("/profile");
                             window.location.reload();
                         }}
                         className={`${

@@ -42,6 +42,9 @@ export type ModeContextPropsType = {
     setDownloadFileName: Dispatch<SetStateAction<string>>;
     doneProcess: boolean;
     setDoneProcess: Dispatch<SetStateAction<boolean>>;
+    isValidSubscription: boolean;
+    premiumRequest: boolean;
+    setPremiumRequest: Dispatch<SetStateAction<boolean>>;
 
 };
 
@@ -75,7 +78,36 @@ function ModeProvider(props: ModeProviderProps) {
     const [doneProcess, setDoneProcess] = useState(false);
     const { user } = useAuth();
     const [userFiles, setUserFiles] = useState<FileProps[]>([]);
+    const [isValidSubscription, setIsValidSubscription] = useState(false);
+    const [premiumRequest, setPremiumRequest] = useState(false);
 
+    const condition = useMemo<Condition>(() => {
+        return {
+            fieldName: "uid",
+            operator: "==",
+            compareValue: user?.uid,
+        };
+    }, [user]);
+
+    const currentUser = useFirestore("users", condition);
+
+    useEffect(() => {
+        if (currentUser !== null) {
+
+            if (currentUser.length > 0) {
+                console.log(currentUser);
+                // TODO: Replace this with expired date
+                if (parseInt(currentUser[0].activate) !== -1) {
+                    console.log("Valid")
+                    setIsValidSubscription(true);
+                }else {
+                    console.log("Invalid")
+                    setIsValidSubscription(false);
+                }
+            }
+
+        }
+    }, [currentUser])
 
     useEffect(() => {
         axios
@@ -148,6 +180,7 @@ function ModeProvider(props: ModeProviderProps) {
     };
 
     const handleDownloadFile = () => {
+
         //TODO: download by file id
         axios
             .get(
@@ -210,7 +243,10 @@ function ModeProvider(props: ModeProviderProps) {
         downloadFileName: downloadFileName,
         setDownloadFileName: setDownloadFileName,
         doneProcess: doneProcess,
-        setDoneProcess: setDoneProcess
+        setDoneProcess: setDoneProcess,
+        isValidSubscription: isValidSubscription,
+        premiumRequest: premiumRequest,
+        setPremiumRequest: setPremiumRequest
     };
     return (
         <ModeContext.Provider {...props} value={value}></ModeContext.Provider>

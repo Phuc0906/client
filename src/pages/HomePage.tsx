@@ -8,6 +8,8 @@ import UserFileInput from "../module/UserFileInput";
 import axios from "axios";
 import { AuthContext, AuthContextPropsType } from "../context/auth-context";
 import useFirestore, { Condition } from "../hooks/useFiresStore";
+import {DocumentData} from "firebase/firestore";
+import {useNavigate} from "react-router-dom";
 
 
 const HomePage: React.FC = () => {
@@ -23,11 +25,13 @@ const HomePage: React.FC = () => {
         handleFixUserText,
         startDownload,
         handleDownloadFile,
+        isValidSubscription
     } = useMode();
     // @ts-ignore
     const { user } = useContext<AuthContextPropsType>(AuthContext);
 
     const [buttonText, setButtonText] = useState("Correct");
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (percentage === '100') {
@@ -35,16 +39,6 @@ const HomePage: React.FC = () => {
         }
     }, [percentage]);
 
-    const condition = useMemo<Condition>(() => {
-        return {
-            fieldName: "uid",
-            operator: "==",
-            compareValue: user?.uid,
-        };
-    }, [user]);
-
-    const currentUser = useFirestore("users", condition);
-    console.log("Hello:", currentUser);
 
     //Functions
     const hanldeTextUpload = () => {
@@ -56,6 +50,11 @@ const HomePage: React.FC = () => {
     useEffect(() => {
 
     }, [])
+
+    const routeToAccountPage = () => {
+        navigate("/profile");
+        window.location.reload();
+    }
 
     return (
         <div className="flex flex-col w-full h-full gap-4 px-4 py-10 mx-auto overflow-hidden">
@@ -104,11 +103,11 @@ const HomePage: React.FC = () => {
                 onClick={
                     mode
                         ? doneProcess
-                            ? handleDownloadFile
+                            ? (isValidSubscription) ? handleDownloadFile : routeToAccountPage
                             : onFileUploadHandle
                         : handleFixUserText
                 }>
-                {doneProcess ? "Download" : "Correct"}
+                {doneProcess ? (!isValidSubscription ? "Unlock Premium" : "Download") : "Correct"}
             </Button>
         </div>
     );
