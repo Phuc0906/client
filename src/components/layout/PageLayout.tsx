@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import { useMode } from "../../context/mode-context";
 import DownloadStatusModal from "../modal/DownloadStatusModal";
 import {RequestPremiumModal} from "../modal";
+import DeleteStatusModal from "../modal/DeleteStatusModal";
 
 const PageLayout: React.FC = () => {
     // @ts-ignore
@@ -22,6 +23,7 @@ const PageLayout: React.FC = () => {
                 </div>
                 <DownloadStatusModal/>
                 <RequestPremiumModal/>
+                <DeleteStatusModal/>
             </div>
         </div>
     );

@@ -45,6 +45,9 @@ export type ModeContextPropsType = {
     isValidSubscription: boolean;
     premiumRequest: boolean;
     setPremiumRequest: Dispatch<SetStateAction<boolean>>;
+    deleteRequest: boolean;
+    setDeleteRequest: Dispatch<SetStateAction<boolean>>;
+    handleDeleteFile: () => void;
 
 };
 
@@ -73,6 +76,8 @@ function ModeProvider(props: ModeProviderProps) {
     const [userText, setUserText] = useState<string>("");
     const [downloadRequest, setDownloadRequest] = useState(false);
     const [outputText, setOutputText] = useState<string | undefined>("");
+    const [deleteRequest, setDeleteRequest] = useState(false);
+    const [outputText, setOutputText] = useState<string | undefined>('');
     const [startDownload, setStartDownload] = useState(false);
     const [downloadFileName, setDownloadFileName] = useState("document.docx");
     const [doneProcess, setDoneProcess] = useState(false);
@@ -105,7 +110,6 @@ function ModeProvider(props: ModeProviderProps) {
                     setIsValidSubscription(false);
                 }
             }
-
         }
     }, [currentUser])
 
@@ -117,7 +121,7 @@ function ModeProvider(props: ModeProviderProps) {
                 setUserFiles(res.data);
             })
             .catch((err) => {});
-    }, [user]);
+    }, [user, downloadRequest, deleteRequest])
 
     //functions
     const onFileUploadHandle = () => {
@@ -199,6 +203,21 @@ function ModeProvider(props: ModeProviderProps) {
             });
     };
 
+    const handleDeleteFile = () => {
+        axios
+            .delete(
+                `${process.env.REACT_APP_API_URL}/api/file/delete-file?file=${documentId}`
+            )
+            .then((res) => {
+                console.log("Delete success")
+                setDeleteRequest(false);
+
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     useEffect(() => {
         console.log("Change " + documentId);
     }, [documentId]);
@@ -216,7 +235,6 @@ function ModeProvider(props: ModeProviderProps) {
                 console.log(err);
             });
     };
-
     const value: ModeContextPropsType = {
         mode: mode,
         setMode: setMode,
@@ -246,7 +264,11 @@ function ModeProvider(props: ModeProviderProps) {
         setDoneProcess: setDoneProcess,
         isValidSubscription: isValidSubscription,
         premiumRequest: premiumRequest,
-        setPremiumRequest: setPremiumRequest
+        setPremiumRequest: setPremiumRequest,
+        deleteRequest: deleteRequest,
+        setDeleteRequest: setDeleteRequest,
+        handleDeleteFile: handleDeleteFile
+
     };
     return (
         <ModeContext.Provider {...props} value={value}></ModeContext.Provider>
