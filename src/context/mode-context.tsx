@@ -131,7 +131,7 @@ function ModeProvider(props: ModeProviderProps) {
         setDoneProcess(false);
         //TODO:  Upload user File
         axios
-            .post(`http://localhost:8080/api/file?uid=${user?.uid}`, formData, {
+            .post(`${process.env.REACT_APP_API_URL}/api/file?uid=${user?.uid}`, formData, {
                 onDownloadProgress: (progressEvent) => {
                     const logVal: string =
                         progressEvent.event.target.responseText.split("\n");
@@ -223,7 +223,7 @@ function ModeProvider(props: ModeProviderProps) {
 
     const handleFixUserText = () => {
         axios
-            .post(`http://localhost:8080/api/file/paragraph`, {
+            .post(`${process.env.REACT_APP_API_URL}/api/file/paragraph`, {
                 paragraph: userText,
             })
             .then((res) => {
