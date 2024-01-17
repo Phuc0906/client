@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useMemo, useState} from "react";
 import {
     PaymentElement,
     useStripe,
@@ -6,14 +6,28 @@ import {
 } from "@stripe/react-stripe-js";
 import {StripePaymentElementOptions} from "@stripe/stripe-js";
 import {useAccountPageMode} from "../context/account-page-context";
-
+import {useAuth} from "../context/auth-context";
+import useFirestore, {Condition} from "../hooks/useFiresStore";
+import {getDocs, setDoc, doc} from "firebase/firestore";
+import {db} from "../firebase/firebase-config"
+import {useMode} from "../context/mode-context";
 const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
-    const {setPaymentModal} = useAccountPageMode();
+    const {setPaymentModal, chosenPlan} = useAccountPageMode();
+
 
     const [message, setMessage] = useState<string | undefined>('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const {user} = useAuth();
+    const condition = useMemo<Condition>(() => {
+        return {
+            fieldName: "uid",
+            operator: "==",
+            compareValue: user?.uid,
+        };
+    }, [user]);
 
     useEffect(() => {
         if (!stripe) {
@@ -28,10 +42,11 @@ const CheckoutForm = () => {
             return;
         }
 
-        stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+        stripe.retrievePaymentIntent(clientSecret).then(async ({ paymentIntent }) => {
             // @ts-ignore
             switch (paymentIntent.status) {
                 case "succeeded":
+
                     setMessage("Payment succeeded!");
                     break;
                 case "processing":
@@ -62,9 +77,11 @@ const CheckoutForm = () => {
             elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
-                return_url: "http://localhost:3000/payment_success",
+                return_url: `http://localhost:3000/payment_success/${chosenPlan}`,
             },
         });
+
+
 
         // This point will only be reached if there is an immediate error when
         // confirming the payment. Otherwise, your customer will be redirected to

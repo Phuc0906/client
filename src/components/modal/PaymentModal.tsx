@@ -3,17 +3,19 @@ import {Appearance, loadStripe, StripeElementsOptions} from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "../../form/CheckoutForm";
 import './payment.css';
+import {useAccountPageMode} from "../../context/account-page-context";
 
-const stripePromise = loadStripe("pk_test_51OV4ZODWIjcWzX8v1BaoXK7gRh9EeM63Ogc6PJB1CQZW5rwcLBvDcJ0BQR2vM2XPAsQhZCXjQGV2zYfJ8e69QcuJ00jLJagLK0");
+const stripePromise = loadStripe("pk_test_51OXKSzEP1gGhSTU9IBjjvSKHnLbvHLfP7VtvYjE6MA1KEVaWU9jvbTgFCdoHe85D2ddpHGi63E7mcjtTuUuG3EN500TXV8w8PW");
 
 const PaymentModal = () => {
+
 
     const [clientSecret, setClientSecret] = useState("");
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        fetch("http://localhost:8080/api/file/payment", {
-            method: "POST",
+        fetch("https://poppoppayment-production.up.railway.app/payment", {
+            method: "GET",
             headers: { "Content-Type": "application/json" },
         })
             .then((res) => res.json())

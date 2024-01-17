@@ -60,6 +60,8 @@ const SignUpPage = () => {
                 fullname: values.fullname,
                 email: values.email,
                 password: values.password,
+                uid: currentUser.uid,
+                activate: -1
             });
             toast.success("Register successfully");
         } else {

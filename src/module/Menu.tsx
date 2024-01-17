@@ -69,6 +69,7 @@ const Menu: React.FC = () => {
       onClick: handleSignOut,
     },
   ];
+  // @ts-ignore
   return (
     <div onMouseLeave={() => setShow(false)} className="relative">
       <svg
@@ -95,7 +96,7 @@ const Menu: React.FC = () => {
       >
         <li className="p-2 select-none break-words">
           <p>Email</p>
-          <p>{user.email}</p>
+          <p>{user?.email}</p>
         </li>
         {menuItem.length > 0 &&
           menuItem.map((item) => (

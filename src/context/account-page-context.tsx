@@ -1,7 +1,18 @@
-import React, {createContext, Dispatch, ReactNode, SetStateAction, useContext, useState} from "react";
+import React, {
+    createContext,
+    Dispatch,
+    ReactNode,
+    SetStateAction,
+    useContext,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import AccountPage from "../pages/AccountPage";
 import {PlanProps} from "../pages/ProductPlanContainer";
 import {set} from "react-hook-form";
+import useFirestore, {Condition} from "../hooks/useFiresStore";
+import {useAuth} from "./auth-context";
 
 type AccountPageContextProps = {
     planVisibility: boolean,
@@ -45,6 +56,26 @@ function AccountPageModeProvider(props: AccountContextProps) {
     const [planModalVisibility, setPlanVisibility] = useState<boolean>(false);
     const [chosenPlan, setChosenPlan] = useState(-1);
     const [paymentModal, setPaymentModal] = useState(false);
+    const {user} = useAuth();
+    const condition = useMemo<Condition>(() => {
+        return {
+            fieldName: "uid",
+            operator: "==",
+            compareValue: user?.uid,
+        };
+    }, [user]);
+
+
+
+    const currentUser = useFirestore("users", condition);
+
+
+    useEffect(() => {
+        console.log(currentUser)
+        if (currentUser) {
+            setChosenPlan(parseInt(currentUser[0]?.activate))
+        }
+    }, [currentUser])
 
     const enablePlanModal = () => {
         setPlanVisibility(true);

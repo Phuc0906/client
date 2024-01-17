@@ -21,9 +21,9 @@ const AccountPage = () => {
             {/*<div className={`w-full`}>*/}
             {/*    <AccountPayment/>*/}
             {/*</div>*/}
-            <div className={`w-full`}>
-                <AccountBillingHistory/>
-            </div>
+            {/*<div className={`w-full`}>*/}
+            {/*    <AccountBillingHistory/>*/}
+            {/*</div>*/}
 
             <div className={``}>
                 <CancelSubscription/>

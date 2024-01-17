@@ -2,8 +2,10 @@ import React, {useEffect, useState} from "react";
 import {UserIcon} from "@heroicons/react/24/outline";
 import {ClipboardDocumentListIcon} from "@heroicons/react/24/outline";
 import {useAccountPageMode} from "../../context/account-page-context";
+import {useMode} from "../../context/mode-context";
 
 const AccountSubscription = () => {
+    const {isValidSubscription} = useMode();
     const {enablePlanModal, chosenPlan} = useAccountPageMode();
     const [displayPlan, setDisplayPlan] = useState<string>('Free-trial');
 
@@ -37,12 +39,16 @@ const AccountSubscription = () => {
                     </div>
                     <button onClick={() => {
                         enablePlanModal();
-                    }} className={`text-blue-400 bg-white w-fit shadow-none`}>Change</button>
+                    }} className={`text-blue-400 bg-white w-fit shadow-none`}>{isValidSubscription ? "Change" : "Upgrade to premium"}</button>
                 </div>
             </div>
             {/*    Showing announcement on auto-charge*/}
             <div className={`text-sm w-[600px] bg-purple-50 px-4 py-3 rounded-xl mt-3`}>
-                <label>Your plan will automatically renew on January 13, 2024. The amount of payment will be 30$</label>
+                <label>
+                    {(isValidSubscription) ?
+                        `Your plan will automatically renew on January 13, 2024. The amount of payment will be ${(chosenPlan === 0) ? "144" : (chosenPlan === 1) ? "60" : "30"}$` :
+                        "Upgrade to Premium for more functions"}
+                </label>
             </div>
         </div>
     </div>
