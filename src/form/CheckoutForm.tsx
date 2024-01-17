@@ -1,26 +1,25 @@
-import React, {FormEvent, useEffect, useMemo, useState} from "react";
+import React, { FormEvent, useEffect, useMemo, useState } from "react";
 import {
     PaymentElement,
     useStripe,
-    useElements
+    useElements,
 } from "@stripe/react-stripe-js";
-import {StripePaymentElementOptions} from "@stripe/stripe-js";
-import {useAccountPageMode} from "../context/account-page-context";
-import {useAuth} from "../context/auth-context";
-import useFirestore, {Condition} from "../hooks/useFiresStore";
-import {getDocs, setDoc, doc} from "firebase/firestore";
-import {db} from "../firebase/firebase-config"
-import {useMode} from "../context/mode-context";
+import { StripePaymentElementOptions } from "@stripe/stripe-js";
+import { useAccountPageMode } from "../context/account-page-context";
+import { useAuth } from "../context/auth-context";
+import useFirestore, { Condition } from "../hooks/useFiresStore";
+import { getDocs, setDoc, doc } from "firebase/firestore";
+import { db } from "../firebase/firebase-config";
+import { useMode } from "../context/mode-context";
 const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
-    const {setPaymentModal, chosenPlan} = useAccountPageMode();
+    const { setPaymentModal, chosenPlan } = useAccountPageMode();
 
-
-    const [message, setMessage] = useState<string | undefined>('');
+    const [message, setMessage] = useState<string | undefined>("");
     const [isLoading, setIsLoading] = useState(false);
 
-    const {user} = useAuth();
+    const { user } = useAuth();
     const condition = useMemo<Condition>(() => {
         return {
             fieldName: "uid",
@@ -42,24 +41,27 @@ const CheckoutForm = () => {
             return;
         }
 
-        stripe.retrievePaymentIntent(clientSecret).then(async ({ paymentIntent }) => {
-            // @ts-ignore
-            switch (paymentIntent.status) {
-                case "succeeded":
-
-                    setMessage("Payment succeeded!");
-                    break;
-                case "processing":
-                    setMessage("Your payment is processing.");
-                    break;
-                case "requires_payment_method":
-                    setMessage("Your payment was not successful, please try again.");
-                    break;
-                default:
-                    setMessage("Something went wrong.");
-                    break;
-            }
-        });
+        stripe
+            .retrievePaymentIntent(clientSecret)
+            .then(async ({ paymentIntent }) => {
+                // @ts-ignore
+                switch (paymentIntent.status) {
+                    case "succeeded":
+                        setMessage("Payment succeeded!");
+                        break;
+                    case "processing":
+                        setMessage("Your payment is processing.");
+                        break;
+                    case "requires_payment_method":
+                        setMessage(
+                            "Your payment was not successful, please try again."
+                        );
+                        break;
+                    default:
+                        setMessage("Something went wrong.");
+                        break;
+                }
+            });
     }, [stripe]);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -77,11 +79,9 @@ const CheckoutForm = () => {
             elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
-                return_url: `http://localhost:3000/payment_success/${chosenPlan}`,
+                return_url: `https://levelup.io.vn/payment_success/${chosenPlan}`,
             },
         });
-
-
 
         // This point will only be reached if there is an immediate error when
         // confirming the payment. Otherwise, your customer will be redirected to
@@ -98,30 +98,41 @@ const CheckoutForm = () => {
     };
 
     const paymentElementOptions: StripePaymentElementOptions = {
-        layout: "tabs"
-    }
-
+        layout: "tabs",
+    };
 
     return (
         <form id="payment-form" onSubmit={handleSubmit}>
             <div className="w-full text-left break-words h-[50px] overflow-hidden">
-                <label>Get premium for  ONLY: 1.99$</label>
+                <label>Get premium for ONLY: 1.99$</label>
             </div>
-            <PaymentElement id="payment-element" options={paymentElementOptions} />
+            <PaymentElement
+                id="payment-element"
+                options={paymentElementOptions}
+            />
             <div className={`flex items-center justify-center gap-5`}>
-                <button onClick={() => {
-                    setPaymentModal(false);
-                }}>Cancel</button>
-                <button disabled={isLoading || !stripe || !elements} id="submit">
-                <span id="button-text">
-                  {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
-                </span>
+                <button
+                    onClick={() => {
+                        setPaymentModal(false);
+                    }}>
+                    Cancel
+                </button>
+                <button
+                    disabled={isLoading || !stripe || !elements}
+                    id="submit">
+                    <span id="button-text">
+                        {isLoading ? (
+                            <div className="spinner" id="spinner"></div>
+                        ) : (
+                            "Pay now"
+                        )}
+                    </span>
                 </button>
             </div>
             {/* Show any error or success messages */}
             {message && <div id="payment-message">{message}</div>}
         </form>
     );
-}
+};
 
 export default CheckoutForm;
