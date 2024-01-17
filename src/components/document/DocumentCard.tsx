@@ -10,7 +10,7 @@ type DocumentCardProps = {
 const DocumentCard = ({file}: DocumentCardProps) => {
     const navigate = useNavigate();
     // @ts-ignore
-    const {downloadRequest, setDownloadRequest, setDocumentId, setDownloadFileName, isValidSubscription, setPremiumRequest} = useMode();
+    const {downloadRequest, setDownloadRequest, setDocumentId, setDownloadFileName, isValidSubscription, setPremiumRequest, setDeleteRequest, deleteRequest} = useMode();
 
 
     return <div onClick={() => {

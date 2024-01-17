@@ -77,7 +77,6 @@ function ModeProvider(props: ModeProviderProps) {
     const [downloadRequest, setDownloadRequest] = useState(false);
     const [outputText, setOutputText] = useState<string | undefined>("");
     const [deleteRequest, setDeleteRequest] = useState(false);
-    const [outputText, setOutputText] = useState<string | undefined>('');
     const [startDownload, setStartDownload] = useState(false);
     const [downloadFileName, setDownloadFileName] = useState("document.docx");
     const [doneProcess, setDoneProcess] = useState(false);
