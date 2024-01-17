@@ -103,9 +103,6 @@ const CheckoutForm = () => {
 
     return (
         <form id="payment-form" onSubmit={handleSubmit}>
-            <div className="w-full text-left break-words h-[50px] overflow-hidden">
-                <label>Get premium for ONLY: 1.99$</label>
-            </div>
             <PaymentElement
                 id="payment-element"
                 options={paymentElementOptions}
