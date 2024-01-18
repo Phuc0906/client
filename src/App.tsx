@@ -7,7 +7,7 @@ import { ModeProvider } from "./context/mode-context";
 import PageLayout from "./components/layout/PageLayout";
 import HomePage from "./pages/HomePage";
 import AccountPage from "./pages/AccountPage";
-import {AccountPageModeProvider} from "./context/account-page-context";
+import { AccountPageModeProvider } from "./context/account-page-context";
 import PaymentPage from "./pages/PaymentPage";
 import DocumentsPage from "./pages/DocumentsPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
@@ -26,11 +26,27 @@ const App = () => {
                         element={<SignInPage></SignInPage>}
                     />
                     <Route element={<PageLayout />}>
-                        <Route element={<DocumentsPage></DocumentsPage>} path="/" />
-                        <Route element={<PaymentPage/>} path="/payment" />
-                        <Route element={<PaymentSuccessPage/>} path="/payment_success/:plan_id" />
-                        <Route element={<HomePage></HomePage>} path="/grammar" />
-                        <Route element={<AccountPageModeProvider><AccountPage></AccountPage></AccountPageModeProvider>} path="/profile" />
+                        <Route
+                            element={<DocumentsPage></DocumentsPage>}
+                            path="/"
+                        />
+                        <Route element={<PaymentPage />} path="/payment" />
+                        <Route
+                            element={<PaymentSuccessPage />}
+                            path="/payment_success/:plan_id"
+                        />
+                        <Route
+                            element={<HomePage></HomePage>}
+                            path="/grammar"
+                        />
+                        <Route
+                            element={
+                                <AccountPageModeProvider>
+                                    <AccountPage></AccountPage>
+                                </AccountPageModeProvider>
+                            }
+                            path="/profile"
+                        />
                     </Route>
                 </Routes>
             </ModeProvider>

@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useMemo, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import {
     PaymentElement,
     useStripe,
@@ -6,11 +6,6 @@ import {
 } from "@stripe/react-stripe-js";
 import { StripePaymentElementOptions } from "@stripe/stripe-js";
 import { useAccountPageMode } from "../context/account-page-context";
-import { useAuth } from "../context/auth-context";
-import useFirestore, { Condition } from "../hooks/useFiresStore";
-import { getDocs, setDoc, doc } from "firebase/firestore";
-import { db } from "../firebase/firebase-config";
-import { useMode } from "../context/mode-context";
 const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
@@ -18,15 +13,6 @@ const CheckoutForm = () => {
 
     const [message, setMessage] = useState<string | undefined>("");
     const [isLoading, setIsLoading] = useState(false);
-
-    const { user } = useAuth();
-    const condition = useMemo<Condition>(() => {
-        return {
-            fieldName: "uid",
-            operator: "==",
-            compareValue: user?.uid,
-        };
-    }, [user]);
 
     useEffect(() => {
         if (!stripe) {

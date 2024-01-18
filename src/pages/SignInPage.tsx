@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase-config";
-import {FormValues} from "../react-app-env";
+import { FormValues } from "../react-app-env";
 const validationSchema = yup.object().shape({
     fullname: yup.string(),
     email: yup.string().required(),

@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useAuth } from "../../context/auth-context";
 import { NavLink } from "react-router-dom";
 import Menu from "../../module/Menu";
-import {userInputProp} from "../../react-app-env";
+import { userInputProp } from "../../react-app-env";
+import useFirestore, { Condition } from "../../hooks/useFiresStore";
 
 const Header: React.FC<userInputProp> = ({ className }) => {
     // @ts-ignore
     const { user } = useAuth();
+    const condition = useMemo<Condition>(() => {
+        return {
+            fieldName: "uid",
+            operator: "==",
+            compareValue: user?.uid,
+        };
+    }, [user]);
+    const detailUser = useFirestore("users", condition);
+    console.log("🚀 ~ detailUser:", detailUser);
 
     return (
         <div
@@ -21,7 +31,10 @@ const Header: React.FC<userInputProp> = ({ className }) => {
                 />
                 <h2 className="font-medium">
                     Levelup AI{" "}
-                    <strong className="text-yellow-300">Premium</strong>
+                    {detailUser.length !== 0 &&
+                        detailUser[0].activate !== -1 && (
+                            <strong className="text-yellow-300">Premium</strong>
+                        )}
                 </h2>
             </div>
 
